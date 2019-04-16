@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PureDecorder", "PureDecorde
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PureDecorderPlayer", "PureDecorderPlayer\PureDecorderPlayer.vcxproj", "{B06F02C5-B9FF-4B8F-9AC3-5DE9C473A369}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimplePlayer", "SimplePlayer\SimplePlayer.vcxproj", "{C674A554-4483-4E05-A4F2-E7590349A338}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{B06F02C5-B9FF-4B8F-9AC3-5DE9C473A369}.Release|x64.Build.0 = Release|x64
 		{B06F02C5-B9FF-4B8F-9AC3-5DE9C473A369}.Release|x86.ActiveCfg = Release|Win32
 		{B06F02C5-B9FF-4B8F-9AC3-5DE9C473A369}.Release|x86.Build.0 = Release|Win32
+		{C674A554-4483-4E05-A4F2-E7590349A338}.Debug|x64.ActiveCfg = Debug|x64
+		{C674A554-4483-4E05-A4F2-E7590349A338}.Debug|x64.Build.0 = Debug|x64
+		{C674A554-4483-4E05-A4F2-E7590349A338}.Debug|x86.ActiveCfg = Debug|Win32
+		{C674A554-4483-4E05-A4F2-E7590349A338}.Debug|x86.Build.0 = Debug|Win32
+		{C674A554-4483-4E05-A4F2-E7590349A338}.Release|x64.ActiveCfg = Release|x64
+		{C674A554-4483-4E05-A4F2-E7590349A338}.Release|x64.Build.0 = Release|x64
+		{C674A554-4483-4E05-A4F2-E7590349A338}.Release|x86.ActiveCfg = Release|Win32
+		{C674A554-4483-4E05-A4F2-E7590349A338}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
