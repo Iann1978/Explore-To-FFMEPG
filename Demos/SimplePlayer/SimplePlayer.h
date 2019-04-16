@@ -35,20 +35,26 @@ class SimplePlayer
 
 
 	AVCodecID codec_id = AV_CODEC_ID_H264;
-#define filepath_in  "bigbuckbunny_480x272.h264"
 
+	AVFrame	*pFrame = nullptr;
 
 	int first_time = 1;
 
 	std::queue<MyFrame *> frame_queue;
 
 public:
+
+	int Init();
+
 	int Open();
 
 	void DecorderAllFrames();
 
+	
 
-	MyFrame *DecorderOneFrame();
+	MyFrame *GetOneFrame();
+
+	void FreeOneFrame(MyFrame *frame);
 
 	void Close();
 };

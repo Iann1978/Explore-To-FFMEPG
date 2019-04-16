@@ -1,8 +1,15 @@
 #include "SimplePlayer.h"
 
-int SimplePlayer::Open()
+int SimplePlayer::Init()
 {
 	avcodec_register_all();
+	return 0;
+}
+
+int SimplePlayer::Open()
+{
+	
+	const char *filepath_in = "bigbuckbunny_480x272.h264";
 
 	pCodec = avcodec_find_decoder(codec_id);
 	if (!pCodec) {
@@ -23,11 +30,11 @@ int SimplePlayer::Open()
 
 	//if(pCodec->capabilities&CODEC_CAP_TRUNCATED)
 	//    pCodecCtx->flags|= CODEC_FLAG_TRUNCATED; 
-
 	if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
 		printf("Could not open codec\n");
 		return -1;
 	}
+
 	//Input File
 	fp_in = fopen(filepath_in, "rb");
 	if (!fp_in) {
@@ -36,11 +43,14 @@ int SimplePlayer::Open()
 	}
 
 
-	//pFrame = av_frame_alloc();
+	pFrame = av_frame_alloc();
 	av_init_packet(&packet);
 	return 0;
 };
+void DecorderOneFrame()
+{
 
+}
 void SimplePlayer::DecorderAllFrames()
 {
 	while (1) {
@@ -52,11 +62,12 @@ void SimplePlayer::DecorderAllFrames()
 
 		while (cur_size > 0) {
 
-			int len = av_parser_parse2(
-				pCodecParserCtx, pCodecCtx,
+			int len = av_parser_parse2(pCodecParserCtx, 
+				pCodecCtx,
 				&packet.data, &packet.size,
 				cur_ptr, cur_size,
-				AV_NOPTS_VALUE, AV_NOPTS_VALUE, AV_NOPTS_VALUE);
+				AV_NOPTS_VALUE, AV_NOPTS_VALUE,
+				AV_NOPTS_VALUE);
 
 			cur_ptr += len;
 			cur_size -= len;
@@ -73,7 +84,7 @@ void SimplePlayer::DecorderAllFrames()
 			default: printf("Type:Other\t"); break;
 			}
 			printf("Number:%4d\n", pCodecParserCtx->output_picture_number);
-			AVFrame	*pFrame = av_frame_alloc();
+			
 			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, &packet);
 			if (ret < 0) {
 				printf("Decode Error.\n");
@@ -116,8 +127,7 @@ void SimplePlayer::DecorderAllFrames()
 	//Flush Decoder
 	packet.data = NULL;
 	packet.size = 0;
-	while (1) {
-		AVFrame	*pFrame = av_frame_alloc();
+	while (1) {		
 		ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, &packet);
 		if (ret < 0) {
 			printf("Decode Error.\n");
@@ -127,8 +137,6 @@ void SimplePlayer::DecorderAllFrames()
 			break;
 		}
 		else {
-
-
 			printf("Flush Decoder: Succeed to decode 1 frame!\n");
 			MyFrame *frame = new MyFrame();
 			int size0 = pFrame->height*pFrame->linesize[0];
@@ -153,7 +161,7 @@ void SimplePlayer::DecorderAllFrames()
 }
 
 
-MyFrame *SimplePlayer::DecorderOneFrame()
+MyFrame *SimplePlayer::GetOneFrame()
 {
 	if (frame_queue.size())
 	{
@@ -163,6 +171,11 @@ MyFrame *SimplePlayer::DecorderOneFrame()
 	}
 	return nullptr;
 
+}
+
+void SimplePlayer::FreeOneFrame(MyFrame *frame)
+{
+	free((void *)frame);
 }
 
 void SimplePlayer::Close()

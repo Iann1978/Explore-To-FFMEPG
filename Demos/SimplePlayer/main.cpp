@@ -42,14 +42,18 @@ int refresh_video(void *opaque) {
 int main(int argc, char* argv[])
 {
 
-	SimplePlayer decorder;
-	if (decorder.Open() != 0)
+	SimplePlayer player;
+	if (player.Init() != 0)
+	{
+		printf("Could not initialized the player.");
+	}
+	if (player.Open() != 0)
 	{
 		printf("Could open frame decorder.");
 		return -1;
 	}
 
-	decorder.DecorderAllFrames();
+	player.DecorderAllFrames();
 
 
 	if (SDL_Init(SDL_INIT_VIDEO)) {
@@ -80,7 +84,7 @@ int main(int argc, char* argv[])
 		//Wait
 		SDL_WaitEvent(&event);
 		if (event.type == REFRESH_EVENT) {
-			MyFrame *frame = decorder.DecorderOneFrame();
+			MyFrame *frame = player.GetOneFrame();
 			if (!frame)
 			{
 				printf("Error when decorder one frame.\n");
@@ -93,7 +97,7 @@ int main(int argc, char* argv[])
 				frame->data[0], frame->linesize[0],
 				frame->data[1], frame->linesize[1],
 				frame->data[2], frame->linesize[2]);
-
+			player.FreeOneFrame(frame);
 			SDL_RenderClear(sdlRenderer);
 			SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
 			SDL_RenderPresent(sdlRenderer);
