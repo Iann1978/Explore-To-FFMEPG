@@ -2,161 +2,124 @@
 
 int SimplePlayer::Init()
 {
-	avcodec_register_all();
+	//avcodec_register_all();
 	return 0;
 }
 
 int SimplePlayer::Open()
 {
-	
-	const char *filepath_in = "bigbuckbunny_480x272.h264";
+	av_register_all();
+	avformat_network_init();
+	pFormatCtx = avformat_alloc_context();
 
-	pCodec = avcodec_find_decoder(codec_id);
-	if (!pCodec) {
-		printf("Codec not found\n");
+	if (avformat_open_input(&pFormatCtx, filepath, NULL, NULL) != 0) {
+		printf("Couldn't open input stream.\n");
 		return -1;
 	}
-	pCodecCtx = avcodec_alloc_context3(pCodec);
-	if (!pCodecCtx) {
-		printf("Could not allocate video codec context\n");
+	if (avformat_find_stream_info(pFormatCtx, NULL) < 0) {
+		printf("Couldn't find stream information.\n");
+		return -1;
+	}
+	videoindex = -1;
+	for (i = 0; i < pFormatCtx->nb_streams; i++)
+		if (pFormatCtx->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO) {
+			videoindex = i;
+			break;
+		}
+	if (videoindex == -1) {
+		printf("Didn't find a video stream.\n");
 		return -1;
 	}
 
-	pCodecParserCtx = av_parser_init(codec_id);
-	if (!pCodecParserCtx) {
-		printf("Could not allocate video parser context\n");
+	pCodecCtx = pFormatCtx->streams[videoindex]->codec;
+	pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
+	if (pCodec == NULL) {
+		printf("Codec not found.\n");
 		return -1;
 	}
-
-	//if(pCodec->capabilities&CODEC_CAP_TRUNCATED)
-	//    pCodecCtx->flags|= CODEC_FLAG_TRUNCATED; 
 	if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
-		printf("Could not open codec\n");
+		printf("Could not open codec.\n");
 		return -1;
 	}
-
-	//Input File
-	fp_in = fopen(filepath_in, "rb");
-	if (!fp_in) {
-		printf("Could not open input stream\n");
-		return -1;
-	}
-
 
 	pFrame = av_frame_alloc();
-	av_init_packet(&packet);
+	pFrameYUV = av_frame_alloc();
+	out_buffer = (unsigned char *)av_malloc(av_image_get_buffer_size(AV_PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height, 1));
+	av_image_fill_arrays(pFrameYUV->data, pFrameYUV->linesize, out_buffer,
+		AV_PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height, 1);
+
+	packet = (AVPacket *)av_malloc(sizeof(AVPacket));
+	//Output Info-----------------------------
+	printf("--------------- File Information ----------------\n");
+	av_dump_format(pFormatCtx, 0, filepath, 0);
+	printf("-------------------------------------------------\n");
+	img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt,
+		pCodecCtx->width, pCodecCtx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL);
 	return 0;
 };
+
 void DecorderOneFrame()
 {
 
 }
-void SimplePlayer::DecorderAllFrames()
+
+
+MyFrame* Convert(AVFrame *avframe)
 {
-	while (1) {
+	MyFrame *frame = new MyFrame();
+	int size0 = avframe->height*avframe->linesize[0];
+	frame->data[0] = (uint8_t *)malloc(size0);
+	frame->linesize[0] = avframe->linesize[0];
+	memcpy(frame->data[0], avframe->data[0], size0);
 
-		cur_size = fread(in_buffer, 1, in_buffer_size, fp_in);
-		if (cur_size == 0)
-			break;
-		cur_ptr = in_buffer;
+	int size1 = avframe->height*avframe->linesize[1]/2;
+	frame->data[1] = (uint8_t *)malloc(size1);
+	frame->linesize[1] = avframe->linesize[1];
+	memcpy(frame->data[1], avframe->data[1], size1);
 
-		while (cur_size > 0) {
+	int size2 = avframe->height*avframe->linesize[2]/2;
+	frame->data[2] = (uint8_t *)malloc(size2);
+	frame->linesize[2] = avframe->linesize[2];
+	memcpy(frame->data[2], avframe->data[2], size2);
+	
+	return frame;
+}
 
-			int len = av_parser_parse2(pCodecParserCtx, 
-				pCodecCtx,
-				&packet.data, &packet.size,
-				cur_ptr, cur_size,
-				AV_NOPTS_VALUE, AV_NOPTS_VALUE,
-				AV_NOPTS_VALUE);
 
-			cur_ptr += len;
-			cur_size -= len;
-
-			if (packet.size == 0)
-				continue;
-
-			//Some Info from AVCodecParserContext
-			printf("[Packet]Size:%6d\t", packet.size);
-			switch (pCodecParserCtx->pict_type) {
-			case AV_PICTURE_TYPE_I: printf("Type:I\t"); break;
-			case AV_PICTURE_TYPE_P: printf("Type:P\t"); break;
-			case AV_PICTURE_TYPE_B: printf("Type:B\t"); break;
-			default: printf("Type:Other\t"); break;
-			}
-			printf("Number:%4d\n", pCodecParserCtx->output_picture_number);
-			
-			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, &packet);
+int SimplePlayer::DecorderAllFrames()
+{
+	//SDL End----------------------
+	while (av_read_frame(pFormatCtx, packet) >= 0) {
+		if (packet->stream_index == videoindex) {
+			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
 			if (ret < 0) {
 				printf("Decode Error.\n");
-				return;
+				return -1;
 			}
 			if (got_picture) {
-				if (first_time) {
-					printf("\nCodec Full Name:%s\n", pCodecCtx->codec->long_name);
-					printf("width:%d\nheight:%d\n\n", pCodecCtx->width, pCodecCtx->height);
-					first_time = 0;
-				}
+				sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
+					pFrameYUV->data, pFrameYUV->linesize);
+				pFrameYUV->width = pFrame->width;
+				pFrameYUV->height = pFrame->height;
 
-				printf("Succeed to decode 1 frame!\n");
-				MyFrame *frame = new MyFrame();
-				int size0 = pFrame->height*pFrame->linesize[0];
-				frame->data[0] = (uint8_t *)malloc(size0);
-				frame->linesize[0] = pFrame->linesize[0];
-				memcpy(frame->data[0], pFrame->data[0], size0);
-
-				int size1 = pFrame->height*pFrame->linesize[1];
-				frame->data[1] = (uint8_t *)malloc(size1);
-				frame->linesize[1] = pFrame->linesize[1];
-				memcpy(frame->data[1], pFrame->data[1], size1);
-
-				int size2 = pFrame->height*pFrame->linesize[2];
-				frame->data[2] = (uint8_t *)malloc(size2);
-				frame->linesize[2] = pFrame->linesize[2];
-				memcpy(frame->data[2], pFrame->data[2], size2);
-
+				MyFrame *frame = Convert(pFrame);
 				frame_queue.push(frame);
-
-
-
-
 			}
 		}
-
+		av_free_packet(packet);
 	}
-
-	//Flush Decoder
-	packet.data = NULL;
-	packet.size = 0;
-	while (1) {		
-		ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, &packet);
-		if (ret < 0) {
-			printf("Decode Error.\n");
-			return;
-		}
-		if (!got_picture) {
+	//flush decoder
+	//FIX: Flush Frames remained in Codec
+	while (1) {
+		ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
+		if (ret < 0)
 			break;
-		}
-		else {
-			printf("Flush Decoder: Succeed to decode 1 frame!\n");
-			MyFrame *frame = new MyFrame();
-			int size0 = pFrame->height*pFrame->linesize[0];
-			frame->data[0] = (uint8_t *)malloc(size0);
-			frame->linesize[0] = pFrame->linesize[0];
-			memcpy(frame->data[0], pFrame->data[0], size0);
-
-			int size1 = pFrame->height*pFrame->linesize[1];
-			frame->data[1] = (uint8_t *)malloc(size1);
-			frame->linesize[1] = pFrame->linesize[1];
-			memcpy(frame->data[1], pFrame->data[1], size1);
-
-			int size2 = pFrame->height*pFrame->linesize[2];
-			frame->data[2] = (uint8_t *)malloc(size2);
-			frame->linesize[2] = pFrame->linesize[2];
-			memcpy(frame->data[2], pFrame->data[2], size2);
-
-			frame_queue.push(frame);
-			return;
-		}
+		if (!got_picture)
+			break;
+		sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
+			pFrameYUV->data, pFrameYUV->linesize);
+		MyFrame *frame = Convert(pFrameYUV);
+		frame_queue.push(frame);
 	}
 }
 
@@ -180,13 +143,14 @@ void SimplePlayer::FreeOneFrame(MyFrame *frame)
 
 void SimplePlayer::Close()
 {
-	fclose(fp_in);
-	fclose(fp_out);
+	sws_freeContext(img_convert_ctx);
 
 
-	av_parser_close(pCodecParserCtx);
 
-	//av_frame_free(&pFrame);
+
+
+	av_frame_free(&pFrameYUV);
+	av_frame_free(&pFrame);
 	avcodec_close(pCodecCtx);
-	av_free(pCodecCtx);
+	avformat_close_input(&pFormatCtx);
 }
