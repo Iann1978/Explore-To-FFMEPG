@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
 	sdlRect.w = screen_w;
 	sdlRect.h = screen_h;
 
-	MyFrame *frame = nullptr;
+	AVFrame *frame = nullptr;
 	//SDL End----------------------
 	while (frame = player.GetOneFrame()) {
 

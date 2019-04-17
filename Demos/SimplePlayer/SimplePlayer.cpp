@@ -8,7 +8,7 @@ int SimplePlayer::Init()
 
 int SimplePlayer::Open()
 {
-	av_register_all();
+	
 	avformat_network_init();
 	pFormatCtx = avformat_alloc_context();
 
@@ -62,27 +62,24 @@ void DecorderOneFrame()
 {
 
 }
-
-
-MyFrame* Convert(AVFrame *avframe)
+AVFrame *DeepCopyFrame(AVFrame *frame)
 {
-	MyFrame *frame = new MyFrame();
-	int size0 = avframe->height*avframe->linesize[0];
-	frame->data[0] = (uint8_t *)malloc(size0);
-	frame->linesize[0] = avframe->linesize[0];
-	memcpy(frame->data[0], avframe->data[0], size0);
+	AVFrame *copyFrame = av_frame_alloc();
+	copyFrame->format = frame->format;
+	copyFrame->width = frame->width;
+	copyFrame->height = frame->height;
+	copyFrame->channels = frame->channels;
+	copyFrame->channel_layout = frame->channel_layout;
+	copyFrame->nb_samples = frame->nb_samples;
+	av_frame_get_buffer(copyFrame, 32);
+	av_frame_copy(copyFrame, frame);
+	av_frame_copy_props(copyFrame, frame);
+	return copyFrame;
+}
 
-	int size1 = avframe->height*avframe->linesize[1]/2;
-	frame->data[1] = (uint8_t *)malloc(size1);
-	frame->linesize[1] = avframe->linesize[1];
-	memcpy(frame->data[1], avframe->data[1], size1);
-
-	int size2 = avframe->height*avframe->linesize[2]/2;
-	frame->data[2] = (uint8_t *)malloc(size2);
-	frame->linesize[2] = avframe->linesize[2];
-	memcpy(frame->data[2], avframe->data[2], size2);
-	
-	return frame;
+AVFrame* Convert(AVFrame *avframe)
+{
+	return DeepCopyFrame(avframe);
 }
 
 
@@ -102,7 +99,7 @@ int SimplePlayer::DecorderAllFrames()
 				pFrameYUV->width = pFrame->width;
 				pFrameYUV->height = pFrame->height;
 
-				MyFrame *frame = Convert(pFrame);
+				AVFrame *frame = Convert(pFrame);
 				frame_queue.push(frame);
 			}
 		}
@@ -118,17 +115,17 @@ int SimplePlayer::DecorderAllFrames()
 			break;
 		sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
 			pFrameYUV->data, pFrameYUV->linesize);
-		MyFrame *frame = Convert(pFrameYUV);
+		AVFrame *frame = Convert(pFrameYUV);
 		frame_queue.push(frame);
 	}
 }
 
 
-MyFrame *SimplePlayer::GetOneFrame()
+AVFrame *SimplePlayer::GetOneFrame()
 {
 	if (frame_queue.size())
 	{
-		MyFrame *frame = frame_queue.front();
+		AVFrame *frame = frame_queue.front();
 		frame_queue.pop();
 		return frame;
 	}
@@ -136,19 +133,14 @@ MyFrame *SimplePlayer::GetOneFrame()
 
 }
 
-void SimplePlayer::FreeOneFrame(MyFrame *frame)
+void SimplePlayer::FreeOneFrame(AVFrame *frame)
 {
-	free((void *)frame);
+	//free((void *)frame);
 }
 
 void SimplePlayer::Close()
 {
 	sws_freeContext(img_convert_ctx);
-
-
-
-
-
 	av_frame_free(&pFrameYUV);
 	av_frame_free(&pFrame);
 	avcodec_close(pCodecCtx);

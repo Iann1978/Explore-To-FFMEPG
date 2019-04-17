@@ -11,12 +11,6 @@ extern "C"
 };
 
 
-
-struct MyFrame
-{
-	uint8_t *data[AV_NUM_DATA_POINTERS];
-	int linesize[AV_NUM_DATA_POINTERS];
-};
 class SimplePlayer
 {
 	AVFormatContext	*pFormatCtx;
@@ -35,7 +29,7 @@ class SimplePlayer
 	int screen_w = 0, screen_h = 0;
 	FILE *fp_yuv;
 	
-	std::queue<MyFrame *> frame_queue;
+	std::queue<AVFrame *> frame_queue;
 
 public:
 
@@ -57,9 +51,9 @@ public:
 
 	
 
-	MyFrame *GetOneFrame();
+	AVFrame *GetOneFrame();
 
-	void FreeOneFrame(MyFrame *frame);
+	void FreeOneFrame(AVFrame *frame);
 
 	void Close();
 };
