@@ -45,6 +45,7 @@ int main(int argc, char* argv[])
 	SDL_Texture* sdlTexture;
 	SDL_Rect sdlRect;
 
+	
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER)) {
 		printf("Could not initialize SDL - %s\n", SDL_GetError());
 		return -1;
@@ -73,9 +74,12 @@ int main(int argc, char* argv[])
 	sdlRect.w = screen_w;
 	sdlRect.h = screen_h;
 
+	
 
 	SDL_Thread *refresh_thread = SDL_CreateThread(refresh_video, NULL, NULL);
 	SDL_Event event;
+
+
 	while (1) {
 		//Wait
 		SDL_WaitEvent(&event);
@@ -87,7 +91,7 @@ int main(int argc, char* argv[])
 				frame->data[2], frame->linesize[2]);
 
 			player.FreeOneFrame(frame);
-			
+
 
 			SDL_RenderClear(sdlRenderer);
 			SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, &sdlRect);
@@ -99,14 +103,12 @@ int main(int argc, char* argv[])
 			SDL_GetWindowSize(screen, &screen_w, &screen_h);
 		}
 		else if (event.type == SDL_KEYDOWN) {
-			if (event.key.keysym.sym == SDLK_LEFT)
-			{
+			if (event.key.keysym.sym == SDLK_LEFT) {
 				int a = 0;
 			}
-			if (event.key.keysym.sym == SDLK_RIGHT)
-			{
+			if (event.key.keysym.sym == SDLK_RIGHT) {
 				int b = 0;
-
+			}
 		}
 		else if (event.type == SDL_QUIT) {
 			thread_exit = 1;
@@ -115,9 +117,8 @@ int main(int argc, char* argv[])
 			break;
 		}
 	}
+
 	SDL_Quit();
-
-
-
 	return 0;
 }
+
