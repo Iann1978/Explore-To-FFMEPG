@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 	SimplePlayer player;
 	player.Init();
 	player.Open();
-	player.DecorderAllFrames();
+	//player.DecorderAllFrames();
 
 
 	//SDL---------------------------
@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 		//Wait
 		SDL_WaitEvent(&event);
 		if (event.type == REFRESH_EVENT) {
-			AVFrame *frame = player.GetOneFrame();
+			AVFrame *frame = player.DecordeOneFrame();
 			SDL_UpdateYUVTexture(sdlTexture, &sdlRect,
 				frame->data[0], frame->linesize[0],
 				frame->data[1], frame->linesize[1],

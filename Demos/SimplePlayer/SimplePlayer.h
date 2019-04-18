@@ -49,7 +49,7 @@ public:
 
 	int DecorderAllFrames();
 
-	
+	AVFrame *DecordeOneFrame();
 
 	AVFrame *GetOneFrame();
 

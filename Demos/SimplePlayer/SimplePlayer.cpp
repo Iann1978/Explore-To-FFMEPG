@@ -120,6 +120,33 @@ int SimplePlayer::DecorderAllFrames()
 	}
 }
 
+AVFrame *SimplePlayer::DecordeOneFrame()
+{
+	AVFrame *frame = nullptr;
+	while (!frame && av_read_frame(pFormatCtx, packet) >= 0) {
+		if (packet->stream_index == videoindex) {
+			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
+			if (ret < 0) {
+				printf("Decode Error.\n");
+				return nullptr;
+			}
+			if (got_picture)
+				frame = Convert(pFrame);				
+		}
+		av_free_packet(packet);
+	}
+	
+	while (!frame) {
+		ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
+		if (ret < 0)
+			break;
+		if (!got_picture)
+			break;
+		
+		frame = Convert(pFrame);
+	}
+	return frame;
+}
 
 AVFrame *SimplePlayer::GetOneFrame()
 {
