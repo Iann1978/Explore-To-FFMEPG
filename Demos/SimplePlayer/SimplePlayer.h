@@ -28,6 +28,7 @@ class SimplePlayer
 	//SDL---------------------------
 	int screen_w = 0, screen_h = 0;
 	FILE *fp_yuv;
+	int64_t pts;
 	
 	std::queue<AVFrame *> frame_queue;
 
@@ -52,6 +53,11 @@ public:
 	AVFrame *DecordeOneFrame();
 
 	AVFrame *GetOneFrame();
+
+
+	void FastForward();
+	void FastBackward();
+
 
 	void FreeOneFrame(AVFrame *frame);
 

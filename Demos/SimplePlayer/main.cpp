@@ -104,10 +104,10 @@ int main(int argc, char* argv[])
 		}
 		else if (event.type == SDL_KEYDOWN) {
 			if (event.key.keysym.sym == SDLK_LEFT) {
-				int a = 0;
+				player.FastBackward();
 			}
 			if (event.key.keysym.sym == SDLK_RIGHT) {
-				int b = 0;
+				player.FastForward();
 			}
 		}
 		else if (event.type == SDL_QUIT) {

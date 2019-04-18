@@ -145,7 +145,21 @@ AVFrame *SimplePlayer::DecordeOneFrame()
 		
 		frame = Convert(pFrame);
 	}
+
+	if (frame)
+	{
+		this->pts = frame->pts;
+	}
 	return frame;
+}
+
+void SimplePlayer::FastForward()
+{
+	av_seek_frame(pFormatCtx, videoindex, pts + 1000, 0);
+}
+void SimplePlayer::FastBackward()
+{
+	av_seek_frame(pFormatCtx, videoindex, pts - 1000, 0);
 }
 
 AVFrame *SimplePlayer::GetOneFrame()
