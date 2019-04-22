@@ -109,6 +109,10 @@ int main(int argc, char* argv[])
 			if (event.key.keysym.sym == SDLK_RIGHT) {
 				player.FastForward();
 			}
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
+				thread_exit = 1;
+			}
+
 		}
 		else if (event.type == SDL_QUIT) {
 			thread_exit = 1;

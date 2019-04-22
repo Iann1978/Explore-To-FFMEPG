@@ -1543,6 +1543,7 @@ typedef struct AVCodecContext {
     enum AVCodecID     codec_id; /* see AV_CODEC_ID_xxx */
 
     /**
+
      * fourcc (LSB first, so "ABCD" -> ('D'<<24) + ('C'<<16) + ('B'<<8) + 'A').
      * This is used to work around some encoder bugs.
      * A demuxer should set this to what is stored in the field used to identify the codec.
