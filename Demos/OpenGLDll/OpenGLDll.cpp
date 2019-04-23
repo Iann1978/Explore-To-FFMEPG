@@ -9,7 +9,7 @@ extern "C" int __declspec(dllexport)  GetDllVersion()
 	return 2;
 };
 
-
+extern "C" int __declspec(dllexport) DrawTriange();
 
 extern "C" int __declspec(dllexport) CreateGL(HWND wnd)
 {
@@ -52,7 +52,22 @@ extern "C" int __declspec(dllexport) CreateGL(HWND wnd)
 
 	glClearColor(1.0f, 0.586f, 0.949f, 1.0f);	// rgb(33,150,243)
 	glClear(GL_COLOR_BUFFER_BIT);
+	DrawTriange();
 	SwapBuffers(DC);
 	return 0;
 
+}
+
+
+extern "C" int __declspec(dllexport) DrawTriange()
+{
+	glClearColor(1.0f, 0.586f, 0.949f, 1.0f);	// rgb(33,150,243)
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0, 0);
+	glVertex2d(1, 0);
+	glVertex2d(0, 1);
+	glEnd();
+	return 0;
 }
