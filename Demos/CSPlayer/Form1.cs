@@ -35,13 +35,13 @@ namespace CSPlayer
         );
 
 
-        //根据坐标获取窗口句柄
-        [DllImport("OpenGLDll")]
-        private static extern int GetDllVersion();
+        ////根据坐标获取窗口句柄
+        //[DllImport("OpenGLDll")]
+        //private static extern int GetDllVersion();
 
-        //根据坐标获取窗口句柄
-        [DllImport("OpenGLDll")]
-        private static extern int CreateGL(IntPtr hwnd);
+        ////根据坐标获取窗口句柄
+        //[DllImport("OpenGLDll")]
+        //private static extern int CreateGL(IntPtr hwnd);
 
         public Form1()
         {
@@ -64,8 +64,8 @@ namespace CSPlayer
             StringBuilder className = new StringBuilder(256);
             GetClassName(formHandle, className, className.Capacity);//得到窗口的句柄
 
-            int ver = GetDllVersion();
-            int err = CreateGL(formHandle);
+            int ver = LibPlayer.GetDllVersion();
+            int err = LibPlayer.CreateGL(formHandle);
             this.textBox1.Text = "窗口句柄:" + formHandle.ToString() + Environment.NewLine + "窗口标题:" + title + Environment.NewLine + "类名:" + className + ", OpenGLDll Version:" + ver + ", err:" + err;
 
         }
