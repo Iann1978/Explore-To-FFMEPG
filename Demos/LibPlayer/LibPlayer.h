@@ -24,7 +24,7 @@ class LibPlayer
 	int ret, got_picture;
 	struct SwsContext *img_convert_ctx;
 
-	const char *filepath = "E:/Movies/The.Meg.mkv";
+	const char *filepath = "E:/githome/Explore-To-FFMEPG/Demos/SimplePlayer/bigbuckbunny_480x272.h264";;
 	//SDL---------------------------
 	int screen_w = 0, screen_h = 0;
 	FILE *fp_yuv;
