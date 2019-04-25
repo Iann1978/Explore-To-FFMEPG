@@ -52,22 +52,47 @@ namespace CSPlayer
         {
 
         }
-
+        IntPtr wnd;
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
             int x = Cursor.Position.X;
             int y = Cursor.Position.Y;
             Point p = new Point(x, y);
-            IntPtr formHandle = WindowFromPoint(p);//得到窗口句柄
-            StringBuilder title = new StringBuilder(256);
-            GetWindowText(formHandle, title, title.Capacity);//得到窗口的标题
-            StringBuilder className = new StringBuilder(256);
-            GetClassName(formHandle, className, className.Capacity);//得到窗口的句柄
+            wnd = WindowFromPoint(p);//得到窗口句柄
+            //StringBuilder title = new StringBuilder(256);
+            //GetWindowText(wnd, title, title.Capacity);//得到窗口的标题
+            //StringBuilder className = new StringBuilder(256);
+            //GetClassName(wnd, className, className.Capacity);//得到窗口的句柄
 
-            int ver = LibPlayer.GetDllVersion();
-            int err = LibPlayer.CreateGL(formHandle);
-            this.textBox1.Text = "窗口句柄:" + formHandle.ToString() + Environment.NewLine + "窗口标题:" + title + Environment.NewLine + "类名:" + className + ", OpenGLDll Version:" + ver + ", err:" + err;
+            //int ver = LibPlayer.GetDllVersion();
+            //int err = LibPlayer.CreateGL(wnd);
+            //this.textBox1.Text = "窗口句柄:" + wnd.ToString() + Environment.NewLine + "窗口标题:" + title + Environment.NewLine + "类名:" + className + ", OpenGLDll Version:" + ver + ", err:" + err;
 
+        }
+
+        private void buttonInitializeGL_Click(object sender, EventArgs e)
+        {
+            LibPlayer.InitializeGL(wnd);
+        }
+
+        private void buttonReleaseGL_Click(object sender, EventArgs e)
+        {
+            LibPlayer.ReleaseGL();
+        }
+
+        private void buttonCreatePlayer_Click(object sender, EventArgs e)
+        {
+            LibPlayer.CreatePlayer();
+        }
+
+        private void buttonRenderOneFrame_Click(object sender, EventArgs e)
+        {
+            LibPlayer.RenderOneFrame();
+        }
+
+        private void buttonDestroyPlayer_Click(object sender, EventArgs e)
+        {
+            LibPlayer.DestroyPlayer();
         }
     }
 }
