@@ -13,9 +13,7 @@ namespace CSPlayer
         [DllImport("LibPlayer")]
         public static extern int GetDllVersion();
 
-        //根据坐标获取窗口句柄
-        [DllImport("LibPlayer")]
-        public static extern int CreateGL(IntPtr hwnd);
+
 
         [DllImport("LibPlayer")]
         public static extern int InitializeGL(IntPtr hwnd);
