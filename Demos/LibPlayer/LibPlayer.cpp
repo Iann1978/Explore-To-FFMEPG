@@ -82,43 +82,43 @@ AVFrame* Convert(AVFrame *avframe)
 	return DeepCopyFrame(avframe);
 }
 
-
-int LibPlayer::DecorderAllFrames()
-{
-	//SDL End----------------------
-	while (av_read_frame(pFormatCtx, packet) >= 0) {
-		if (packet->stream_index == videoindex) {
-			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
-			if (ret < 0) {
-				printf("Decode Error.\n");
-				return -1;
-			}
-			if (got_picture) {
-				sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
-					pFrameYUV->data, pFrameYUV->linesize);
-				pFrameYUV->width = pFrame->width;
-				pFrameYUV->height = pFrame->height;
-
-				AVFrame *frame = Convert(pFrame);
-				frame_queue.push(frame);
-			}
-		}
-		av_free_packet(packet);
-	}
-	//flush decoder
-	//FIX: Flush Frames remained in Codec
-	while (1) {
-		ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
-		if (ret < 0)
-			break;
-		if (!got_picture)
-			break;
-		sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
-			pFrameYUV->data, pFrameYUV->linesize);
-		AVFrame *frame = Convert(pFrameYUV);
-		frame_queue.push(frame);
-	}
-}
+//
+//int LibPlayer::DecorderAllFrames()
+//{
+//	//SDL End----------------------
+//	while (av_read_frame(pFormatCtx, packet) >= 0) {
+//		if (packet->stream_index == videoindex) {
+//			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
+//			if (ret < 0) {
+//				printf("Decode Error.\n");
+//				return -1;
+//			}
+//			if (got_picture) {
+//				sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
+//					pFrameYUV->data, pFrameYUV->linesize);
+//				pFrameYUV->width = pFrame->width;
+//				pFrameYUV->height = pFrame->height;
+//
+//				AVFrame *frame = Convert(pFrame);
+//				frame_queue.push(frame);
+//			}
+//		}
+//		av_free_packet(packet);
+//	}
+//	//flush decoder
+//	//FIX: Flush Frames remained in Codec
+//	while (1) {
+//		ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
+//		if (ret < 0)
+//			break;
+//		if (!got_picture)
+//			break;
+//		sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
+//			pFrameYUV->data, pFrameYUV->linesize);
+//		AVFrame *frame = Convert(pFrameYUV);
+//		frame_queue.push(frame);
+//	}
+//}
 
 AVFrame *LibPlayer::DecordeOneFrame()
 {
@@ -162,17 +162,17 @@ void LibPlayer::FastBackward()
 	av_seek_frame(pFormatCtx, videoindex, pts - 1000, 0);
 }
 
-AVFrame *LibPlayer::GetOneFrame()
-{
-	if (frame_queue.size())
-	{
-		AVFrame *frame = frame_queue.front();
-		frame_queue.pop();
-		return frame;
-	}
-	return nullptr;
-
-}
+//AVFrame *LibPlayer::GetOneFrame()
+//{
+//	if (frame_queue.size())
+//	{
+//		AVFrame *frame = frame_queue.front();
+//		frame_queue.pop();
+//		return frame;
+//	}
+//	return nullptr;
+//
+//}
 
 void LibPlayer::FreeOneFrame(AVFrame *frame)
 {

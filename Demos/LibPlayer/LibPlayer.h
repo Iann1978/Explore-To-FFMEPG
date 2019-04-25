@@ -25,12 +25,11 @@ class LibPlayer
 	struct SwsContext *img_convert_ctx;
 
 	const char *filepath = "E:/githome/Explore-To-FFMEPG/Demos/SimplePlayer/bigbuckbunny_480x272.h264";;
-	//SDL---------------------------
-	int screen_w = 0, screen_h = 0;
-	FILE *fp_yuv;
+	
+	
 	int64_t pts;
 	
-	std::queue<AVFrame *> frame_queue;
+	//std::queue<AVFrame *> frame_queue;
 
 public:
 
@@ -48,12 +47,7 @@ public:
 
 	int Open();
 
-	int DecorderAllFrames();
-
 	AVFrame *DecordeOneFrame();
-
-	AVFrame *GetOneFrame();
-
 
 	void FastForward();
 	void FastBackward();
