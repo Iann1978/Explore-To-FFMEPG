@@ -54,12 +54,32 @@ int LibRender::InitializeGL(HWND wnd)
 		return 4;
 	}
 
+	if (0 == texture)
+	{
+		glGenTextures(1, &texture);
+	}
+
+
+
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
 	return 0;
 }
 
 
 int LibRender::ReleaseGL()
 {
+	if (texture)
+	{
+		glDeleteTextures(1, &texture);
+		texture = 0;
+	}
+	
+
 	wglMakeCurrent(NULL, NULL);
 	if (RC) {
 		wglDeleteContext(RC);
@@ -84,71 +104,31 @@ int LibRender::RenderOneFrame(AVFrame *frame)
 	av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, out_buffer,
 		AV_PIX_FMT_RGB24, width, height, 1);
 
-
-
+	
 	int lines = sws_scale(img_convert_ctx, frame->data, frame->linesize, 0, height, pFrameRGB->data, pFrameRGB->linesize);
 
 
-	if (0 == texture)
-	{
-		glGenTextures(1, &texture);
-	}
-
-
-	// "Bind" the newly created texture : all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, texture);
-
-
-
-	// Give the image to OpenGL
-	//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 512, 256, GL_RGB, GL_UNSIGNED_BYTE, frame->data[1]);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, pFrameRGB->data[0]);
+	
 
-
-	// Poor filtering, or ...
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
-
-	// ... nice trilinear filtering ...
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glEnable(GL_TEXTURE);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-
-
-
-
-
-
-	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);	
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	glClearColor(1.0f, 0.586f, 0.949f, 1.0f);	// rgb(33,150,243)
-	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(0, 0, 0);
+	
+	
 	glBegin(GL_QUADS);
-
 	glTexCoord2f(0, 0);
 	glVertex3d(-1, -1, 0);
-
 	glTexCoord2f(1, 0);
 	glVertex3d(1, -1, 0);
-
 	glTexCoord2f(1, 1);
 	glVertex3d(1, 1, 0);
-
 	glTexCoord2f(0, 1);
 	glVertex3d(-1, 1, 0);
-
 	glEnd();
 
-	//DrawTriange();
 	SwapBuffers(DC);
 	return 0;
 }
