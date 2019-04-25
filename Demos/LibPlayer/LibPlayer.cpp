@@ -8,6 +8,7 @@ int LibPlayer::Init()
 
 int LibPlayer::Open()
 {
+	const char *filepath = "E:/githome/Explore-To-FFMEPG/Demos/SimplePlayer/bigbuckbunny_480x272.h264";
 	
 	avformat_network_init();
 	pFormatCtx = avformat_alloc_context();
@@ -43,18 +44,34 @@ int LibPlayer::Open()
 	}
 
 	pFrame = av_frame_alloc();
-	pFrameYUV = av_frame_alloc();
-	out_buffer = (unsigned char *)av_malloc(av_image_get_buffer_size(AV_PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height, 1));
-	av_image_fill_arrays(pFrameYUV->data, pFrameYUV->linesize, out_buffer,
-		AV_PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height, 1);
+	
 
 	packet = (AVPacket *)av_malloc(sizeof(AVPacket));
 	//Output Info-----------------------------
 	printf("--------------- File Information ----------------\n");
 	av_dump_format(pFormatCtx, 0, filepath, 0);
 	printf("-------------------------------------------------\n");
-	img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt,
-		pCodecCtx->width, pCodecCtx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL);
+
+
+	outFrame = av_frame_alloc();
+	outFrameBuffer = (unsigned char *)av_malloc(av_image_get_buffer_size(AV_PIX_FMT_RGB24, pCodecCtx->width, pCodecCtx->height, 1));
+	av_image_fill_arrays(outFrame->data, outFrame->linesize, outFrameBuffer, AV_PIX_FMT_RGB24, pCodecCtx->width, pCodecCtx->height, 1);
+	outFrameConvert = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt,
+		pCodecCtx->width, pCodecCtx->height, AV_PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+
+
+	//SwsContext *img_convert_ctx = sws_getContext(width, height, AV_PIX_FMT_YUV420P,
+	//	width, height, AV_PIX_FMT_RGB24, SWS_BICUBIC, NULL,
+	//	NULL, NULL);
+
+	//AVFrame *pFrameRGB = av_frame_alloc();
+	//unsigned char *out_buffer = (unsigned char *)av_malloc(av_image_get_buffer_size(AV_PIX_FMT_RGB24, width, height, 1));
+	//av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, out_buffer,
+	//	AV_PIX_FMT_RGB24, width, height, 1);
+
+	//
+	//int lines = sws_scale(img_convert_ctx, frame->data, frame->linesize, 0, height, pFrameRGB->data, pFrameRGB->linesize);
+
 	return 0;
 };
 
@@ -77,48 +94,16 @@ AVFrame *DeepCopyFrame(AVFrame *frame)
 	return copyFrame;
 }
 
-AVFrame* Convert(AVFrame *avframe)
+AVFrame* LibPlayer::Convert(AVFrame *frame)
 {
-	return DeepCopyFrame(avframe);
+	int lines = sws_scale(outFrameConvert, frame->data, frame->linesize, 0, frame->height, outFrame->data, outFrame->linesize);
+	outFrame->width = frame->width;
+	outFrame->height = frame->height;
+	return outFrame;
+
+	//return DeepCopyFrame(avframe);
 }
 
-//
-//int LibPlayer::DecorderAllFrames()
-//{
-//	//SDL End----------------------
-//	while (av_read_frame(pFormatCtx, packet) >= 0) {
-//		if (packet->stream_index == videoindex) {
-//			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
-//			if (ret < 0) {
-//				printf("Decode Error.\n");
-//				return -1;
-//			}
-//			if (got_picture) {
-//				sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
-//					pFrameYUV->data, pFrameYUV->linesize);
-//				pFrameYUV->width = pFrame->width;
-//				pFrameYUV->height = pFrame->height;
-//
-//				AVFrame *frame = Convert(pFrame);
-//				frame_queue.push(frame);
-//			}
-//		}
-//		av_free_packet(packet);
-//	}
-//	//flush decoder
-//	//FIX: Flush Frames remained in Codec
-//	while (1) {
-//		ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
-//		if (ret < 0)
-//			break;
-//		if (!got_picture)
-//			break;
-//		sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
-//			pFrameYUV->data, pFrameYUV->linesize);
-//		AVFrame *frame = Convert(pFrameYUV);
-//		frame_queue.push(frame);
-//	}
-//}
 
 AVFrame *LibPlayer::DecordeOneFrame()
 {
@@ -162,27 +147,10 @@ void LibPlayer::FastBackward()
 	av_seek_frame(pFormatCtx, videoindex, pts - 1000, 0);
 }
 
-//AVFrame *LibPlayer::GetOneFrame()
-//{
-//	if (frame_queue.size())
-//	{
-//		AVFrame *frame = frame_queue.front();
-//		frame_queue.pop();
-//		return frame;
-//	}
-//	return nullptr;
-//
-//}
-
-void LibPlayer::FreeOneFrame(AVFrame *frame)
-{
-	//free((void *)frame);
-}
-
 void LibPlayer::Close()
 {
-	sws_freeContext(img_convert_ctx);
-	av_frame_free(&pFrameYUV);
+	sws_freeContext(outFrameConvert);
+	av_frame_free(&outFrame);
 	av_frame_free(&pFrame);
 	avcodec_close(pCodecCtx);
 	avformat_close_input(&pFormatCtx);

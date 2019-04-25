@@ -17,19 +17,22 @@ class LibPlayer
 	int				i, videoindex;
 	AVCodecContext	*pCodecCtx;
 	AVCodec			*pCodec;
-	AVFrame	*pFrame, *pFrameYUV;
-	unsigned char *out_buffer;
+	AVFrame	*pFrame;
+	
 	AVPacket *packet;
 	int y_size;
 	int ret, got_picture;
-	struct SwsContext *img_convert_ctx;
-
-	const char *filepath = "E:/githome/Explore-To-FFMEPG/Demos/SimplePlayer/bigbuckbunny_480x272.h264";;
-	
-	
 	int64_t pts;
-	
-	//std::queue<AVFrame *> frame_queue;
+
+
+
+	// out frame 
+	AVFrame				*outFrame;
+	unsigned char		*outFrameBuffer;
+	struct SwsContext	*outFrameConvert;
+
+private:
+	AVFrame* Convert(AVFrame *frame);
 
 public:
 
@@ -43,18 +46,15 @@ public:
 		return pCodecCtx->height;
 	}
 
+	
 	int Init();
-
 	int Open();
-
 	AVFrame *DecordeOneFrame();
+	void Close();
+	
+
 
 	void FastForward();
 	void FastBackward();
-
-
-	void FreeOneFrame(AVFrame *frame);
-
-	void Close();
 };
 

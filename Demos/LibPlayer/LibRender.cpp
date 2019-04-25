@@ -95,21 +95,8 @@ int LibRender::RenderOneFrame(AVFrame *frame)
 	int width = frame->width;
 	int height = frame->height;
 
-	SwsContext *img_convert_ctx = sws_getContext(width, height, AV_PIX_FMT_YUV420P,
-		width, height, AV_PIX_FMT_RGB24, SWS_BICUBIC, NULL,
-		NULL, NULL);
-
-	AVFrame *pFrameRGB = av_frame_alloc();
-	unsigned char *out_buffer = (unsigned char *)av_malloc(av_image_get_buffer_size(AV_PIX_FMT_RGB24, width, height, 1));
-	av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, out_buffer,
-		AV_PIX_FMT_RGB24, width, height, 1);
-
-	
-	int lines = sws_scale(img_convert_ctx, frame->data, frame->linesize, 0, height, pFrameRGB->data, pFrameRGB->linesize);
-
-
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, pFrameRGB->data[0]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, frame->data[0]);
 	
 
 	glBindTexture(GL_TEXTURE_2D, texture);
