@@ -10,9 +10,11 @@
     <ClCompile Include="LibPlayer.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="texture.cpp" />
+    <ClCompile Include="LibRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LibPlayer.h" />
     <ClInclude Include="texture.hpp" />
+    <ClInclude Include="LibRender.h" />
   </ItemGroup>
 </Project>
