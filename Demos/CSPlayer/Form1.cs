@@ -31,6 +31,7 @@ namespace CSPlayer
         private void buttonInitializeGL_Click(object sender, EventArgs e)
         {   
             LibPlayer.InitializeGL(Handle);
+            output.Text = "InitializeGL";
         }
 
         private void buttonReleaseGL_Click(object sender, EventArgs e)
@@ -41,6 +42,7 @@ namespace CSPlayer
         private void buttonCreatePlayer_Click(object sender, EventArgs e)
         {
             LibPlayer.CreatePlayer();
+            timerForPlaying.Start();
         }
 
         private void buttonRenderOneFrame_Click(object sender, EventArgs e)
@@ -50,7 +52,33 @@ namespace CSPlayer
 
         private void buttonDestroyPlayer_Click(object sender, EventArgs e)
         {
+            timerForPlaying.Stop();
             LibPlayer.DestroyPlayer();
+        }
+
+        private void Timer_Render(object sender, EventArgs e)
+        {
+            LibPlayer.RenderOneFrame();
+            //label1.Text = (++num).ToString();
+            //Thread.Sleep(3000);
+        }
+
+        private void buttonOpen_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "e:\\Movies";
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    string filePath = openFileDialog.FileName;
+                    output.Text = filePath;
+                }
+            }
         }
     }
 }

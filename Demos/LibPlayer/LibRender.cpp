@@ -92,6 +92,9 @@ int LibRender::ReleaseGL()
 
 int LibRender::RenderOneFrame(AVFrame *frame)
 {
+	if (frame == nullptr)
+		return 1;
+
 	int width = frame->width;
 	int height = frame->height;
 
@@ -106,13 +109,13 @@ int LibRender::RenderOneFrame(AVFrame *frame)
 	
 	
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);
-	glVertex3d(-1, -1, 0);
-	glTexCoord2f(1, 0);
-	glVertex3d(1, -1, 0);
 	glTexCoord2f(1, 1);
-	glVertex3d(1, 1, 0);
+	glVertex3d(-1, -1, 0);
 	glTexCoord2f(0, 1);
+	glVertex3d(1, -1, 0);
+	glTexCoord2f(0, 0);
+	glVertex3d(1, 1, 0);
+	glTexCoord2f(1, 0);
 	glVertex3d(-1, 1, 0);
 	glEnd();
 
