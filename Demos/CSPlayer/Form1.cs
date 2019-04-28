@@ -77,6 +77,8 @@ namespace CSPlayer
                     //Get the path of specified file
                     string filePath = openFileDialog.FileName;
                     output.Text = filePath;
+
+                    LibPlayer.Player_Open(filePath);
                 }
             }
         }

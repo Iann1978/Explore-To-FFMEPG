@@ -29,5 +29,10 @@ namespace CSPlayer
 
         [DllImport("LibPlayer")]
         public static extern int DestroyPlayer();
+
+        [DllImport("LibPlayer")]
+        public static extern int Player_Open(string url);
+
+
     }
 }

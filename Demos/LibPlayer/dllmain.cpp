@@ -45,16 +45,16 @@ extern "C" int __declspec(dllexport) CreatePlayer()
 {
 	player = new LibPlayer();
 	player->Init();
-	player->Open();
+	//player->Open();
 	return 0;
 }
 
-extern "C" int __declspec(dllexport) RenderOneFrame()
+extern "C" int __declspec(dllexport) Player_Open(const char *url)
 {
-	AVFrame *frame = player->DecordeOneFrame();
-	render->RenderOneFrame(frame);
-	return 0;
+	return player->Open(url);
 }
+
+
 
 extern "C" int __declspec(dllexport) DestroyPlayer()
 {
@@ -62,6 +62,13 @@ extern "C" int __declspec(dllexport) DestroyPlayer()
 	return 0;
 }
 
+
+extern "C" int __declspec(dllexport) RenderOneFrame()
+{
+	AVFrame *frame = player->DecordeOneFrame();
+	render->RenderOneFrame(frame);
+	return 0;
+}
 
 
 

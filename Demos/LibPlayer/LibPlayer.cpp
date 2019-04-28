@@ -6,14 +6,15 @@ int LibPlayer::Init()
 	return 0;
 }
 
-int LibPlayer::Open()
+int LibPlayer::Open(const char *url)
 {
-	const char *filepath = "E:/githome/Explore-To-FFMEPG/Demos/SimplePlayer/bigbuckbunny_480x272.h264";
+	//const char *filepath = "E:/githome/Explore-To-FFMEPG/Demos/SimplePlayer/bigbuckbunny_480x272.h264";
+	//const char *filepath = "E:/Movies/10.mp4";
 	
-	avformat_network_init();
+	//avformat_network_init();
 	pFormatCtx = avformat_alloc_context();
 
-	if (avformat_open_input(&pFormatCtx, filepath, NULL, NULL) != 0) {
+	if (avformat_open_input(&pFormatCtx, url, NULL, NULL) != 0) {
 		printf("Couldn't open input stream.\n");
 		return -1;
 	}
@@ -49,7 +50,7 @@ int LibPlayer::Open()
 	packet = (AVPacket *)av_malloc(sizeof(AVPacket));
 	//Output Info-----------------------------
 	printf("--------------- File Information ----------------\n");
-	av_dump_format(pFormatCtx, 0, filepath, 0);
+	av_dump_format(pFormatCtx, 0, url, 0);
 	printf("-------------------------------------------------\n");
 
 
@@ -72,6 +73,7 @@ int LibPlayer::Open()
 	//
 	//int lines = sws_scale(img_convert_ctx, frame->data, frame->linesize, 0, height, pFrameRGB->data, pFrameRGB->linesize);
 
+	status = Status_Opened;
 	return 0;
 };
 
@@ -107,6 +109,12 @@ AVFrame* LibPlayer::Convert(AVFrame *frame)
 
 AVFrame *LibPlayer::DecordeOneFrame()
 {
+	if (status == Status_Unknown)
+	{
+		printf("Error(Status Error): LibPlayer::DecordeOneFrame() status:%d", status);
+		return nullptr;
+	}
+
 	AVFrame *frame = nullptr;
 	while (!frame && av_read_frame(pFormatCtx, packet) >= 0) {
 		if (packet->stream_index == videoindex) {
