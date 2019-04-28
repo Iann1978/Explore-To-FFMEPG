@@ -99,7 +99,7 @@ int LibRender::RenderOneFrame(AVFrame *frame)
 	int height = frame->height;
 
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, frame->data[0]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, frame->data[0]);
 	
 
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -109,13 +109,13 @@ int LibRender::RenderOneFrame(AVFrame *frame)
 	
 	
 	glBegin(GL_QUADS);
-	glTexCoord2f(1, 1);
-	glVertex3d(-1, -1, 0);
 	glTexCoord2f(0, 1);
+	glVertex3d(-1, -1, 0);
+	glTexCoord2f(1, 1);
 	glVertex3d(1, -1, 0);
-	glTexCoord2f(0, 0);
-	glVertex3d(1, 1, 0);
 	glTexCoord2f(1, 0);
+	glVertex3d(1, 1, 0);
+	glTexCoord2f(0, 0);
 	glVertex3d(-1, 1, 0);
 	glEnd();
 
