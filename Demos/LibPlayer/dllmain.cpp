@@ -54,7 +54,20 @@ extern "C" int __declspec(dllexport) Player_Open(const char *url)
 	return player->Open(url);
 }
 
+extern "C" int __declspec(dllexport) Player_Play()
+{
+	return player->Play();
+}
 
+extern "C" int __declspec(dllexport) Player_Pause()
+{
+	return player->Pause();
+}
+
+extern "C" int __declspec(dllexport) Player_Close()
+{
+	return player->Close();
+}
 
 extern "C" int __declspec(dllexport) DestroyPlayer()
 {

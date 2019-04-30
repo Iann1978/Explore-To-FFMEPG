@@ -39,9 +39,10 @@
             this.output = new System.Windows.Forms.Label();
             this.buttonOpen = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
-            this.buttonStop = new System.Windows.Forms.Button();
+            this.buttonPause = new System.Windows.Forms.Button();
             this.videopath = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.buttonClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -127,15 +128,17 @@
             this.buttonPlay.TabIndex = 8;
             this.buttonPlay.Text = "Play";
             this.buttonPlay.UseVisualStyleBackColor = true;
+            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
             // 
-            // buttonStop
+            // buttonPause
             // 
-            this.buttonStop.Location = new System.Drawing.Point(246, 705);
-            this.buttonStop.Name = "buttonStop";
-            this.buttonStop.Size = new System.Drawing.Size(75, 33);
-            this.buttonStop.TabIndex = 9;
-            this.buttonStop.Text = "Stop";
-            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonPause.Location = new System.Drawing.Point(246, 705);
+            this.buttonPause.Name = "buttonPause";
+            this.buttonPause.Size = new System.Drawing.Size(75, 33);
+            this.buttonPause.TabIndex = 9;
+            this.buttonPause.Text = "Pause";
+            this.buttonPause.UseVisualStyleBackColor = true;
+            this.buttonPause.Click += new System.EventHandler(this.buttonPause_Click);
             // 
             // videopath
             // 
@@ -153,14 +156,25 @@
             this.trackBar1.Size = new System.Drawing.Size(1139, 69);
             this.trackBar1.TabIndex = 11;
             // 
+            // buttonClose
+            // 
+            this.buttonClose.Location = new System.Drawing.Point(353, 705);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(75, 33);
+            this.buttonClose.TabIndex = 12;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1222, 852);
+            this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.videopath);
-            this.Controls.Add(this.buttonStop);
+            this.Controls.Add(this.buttonPause);
             this.Controls.Add(this.buttonPlay);
             this.Controls.Add(this.buttonOpen);
             this.Controls.Add(this.output);
@@ -190,9 +204,10 @@
         private System.Windows.Forms.Label output;
         private System.Windows.Forms.Button buttonOpen;
         private System.Windows.Forms.Button buttonPlay;
-        private System.Windows.Forms.Button buttonStop;
+        private System.Windows.Forms.Button buttonPause;
         private System.Windows.Forms.Label videopath;
         private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Button buttonClose;
     }
 }
 

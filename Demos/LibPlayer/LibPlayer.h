@@ -124,8 +124,10 @@ public:
 	
 	int Init();
 	int Open(const char *url);
+	int Play();
+	int Pause();
 	AVFrame *DecordeOneFrame();
-	void Close();
+	int Close();
 	
 
 

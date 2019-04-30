@@ -82,5 +82,20 @@ namespace CSPlayer
                 }
             }
         }
+
+        private void buttonPlay_Click(object sender, EventArgs e)
+        {
+            LibPlayer.Player_Play();
+        }
+
+        private void buttonPause_Click(object sender, EventArgs e)
+        {
+            LibPlayer.Player_Pause();
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            LibPlayer.Player_Close();
+        }
     }
 }

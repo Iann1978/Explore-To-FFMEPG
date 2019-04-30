@@ -33,6 +33,15 @@ namespace CSPlayer
         [DllImport("LibPlayer")]
         public static extern int Player_Open(string url);
 
+        [DllImport("LibPlayer")]
+        public static extern int Player_Play();
+
+        [DllImport("LibPlayer")]
+        public static extern int Player_Pause();
+
+        [DllImport("LibPlayer")]
+        public static extern int Player_Close();
+
 
     }
 }

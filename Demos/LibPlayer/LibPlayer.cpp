@@ -60,29 +60,14 @@ int LibPlayer::Open(const char *url)
 	outFrameConvert = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt,
 		pCodecCtx->width, pCodecCtx->height, AV_PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
 
-
-	//SwsContext *img_convert_ctx = sws_getContext(width, height, AV_PIX_FMT_YUV420P,
-	//	width, height, AV_PIX_FMT_RGB24, SWS_BICUBIC, NULL,
-	//	NULL, NULL);
-
-	//AVFrame *pFrameRGB = av_frame_alloc();
-	//unsigned char *out_buffer = (unsigned char *)av_malloc(av_image_get_buffer_size(AV_PIX_FMT_RGB24, width, height, 1));
-	//av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, out_buffer,
-	//	AV_PIX_FMT_RGB24, width, height, 1);
-
-	//
-	//int lines = sws_scale(img_convert_ctx, frame->data, frame->linesize, 0, height, pFrameRGB->data, pFrameRGB->linesize);
-
 	status = Status_Opened;
 	return 0;
 };
 
-void DecorderOneFrame()
-{
 
-}
 AVFrame *DeepCopyFrame(AVFrame *frame)
 {
+	
 	AVFrame *copyFrame = av_frame_alloc();
 	copyFrame->format = frame->format;
 	copyFrame->width = frame->width;
@@ -109,7 +94,7 @@ AVFrame* LibPlayer::Convert(AVFrame *frame)
 
 AVFrame *LibPlayer::DecordeOneFrame()
 {
-	if (status == Status_Unknown)
+	if (status != Status_Playing)
 	{
 		printf("Error(Status Error): LibPlayer::DecordeOneFrame() status:%d", status);
 		return nullptr;
@@ -155,11 +140,24 @@ void LibPlayer::FastBackward()
 	av_seek_frame(pFormatCtx, videoindex, pts - 1000, 0);
 }
 
-void LibPlayer::Close()
+int LibPlayer::Close()
 {
 	sws_freeContext(outFrameConvert);
 	av_frame_free(&outFrame);
 	av_frame_free(&pFrame);
 	avcodec_close(pCodecCtx);
 	avformat_close_input(&pFormatCtx);
+	return 0;
+}
+
+int LibPlayer::Play()
+{
+	status = Status_Playing;
+	return 0;
+}
+
+int LibPlayer::Pause()
+{
+	status = Status_Paused;
+	return 0;
 }
