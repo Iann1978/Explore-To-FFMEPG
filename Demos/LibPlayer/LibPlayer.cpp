@@ -135,6 +135,7 @@ void LibPlayer::FastForward()
 {
 	av_seek_frame(pFormatCtx, videoindex, pts + 1000, 0);
 }
+
 void LibPlayer::FastBackward()
 {
 	av_seek_frame(pFormatCtx, videoindex, pts - 1000, 0);
@@ -142,11 +143,16 @@ void LibPlayer::FastBackward()
 
 int LibPlayer::Close()
 {
+	if (status != Status_Playing)
+	{
+		return 1;
+	}
 	sws_freeContext(outFrameConvert);
 	av_frame_free(&outFrame);
 	av_frame_free(&pFrame);
 	avcodec_close(pCodecCtx);
 	avformat_close_input(&pFormatCtx);
+	status = Status_Closed;
 	return 0;
 }
 

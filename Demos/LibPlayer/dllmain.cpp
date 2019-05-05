@@ -61,17 +61,29 @@ extern "C" int __declspec(dllexport) Player_Play()
 
 extern "C" int __declspec(dllexport) Player_Pause()
 {
-	return player->Pause();
+	if (player)
+	{
+		return player->Pause();
+	}
+	return -1;
 }
 
 extern "C" int __declspec(dllexport) Player_Close()
 {
-	return player->Close();
+	if (player)
+	{
+		return player->Close();
+	}
+	return -1;
 }
 
 extern "C" int __declspec(dllexport) DestroyPlayer()
 {
-	delete player;
+	if (player)
+	{
+		delete player;
+		player = nullptr;
+	}
 	return 0;
 }
 
