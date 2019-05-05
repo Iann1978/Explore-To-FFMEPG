@@ -23,8 +23,12 @@ extern "C" int __declspec(dllexport) CreateRender(HWND wnd)
 
 extern "C" int __declspec(dllexport) ReleaseRender()
 {
-	render->ReleaseGL();
-	delete render;
+	if (render)
+	{
+		render->ReleaseGL();
+		delete render;
+		render = nullptr;
+	}
 	return 0;
 }
 

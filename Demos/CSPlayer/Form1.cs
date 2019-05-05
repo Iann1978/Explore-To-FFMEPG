@@ -21,9 +21,24 @@ namespace CSPlayer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            LibPlayer.InitializeGL(Handle);
+            Log("InitializeGL");
+            LibPlayer.CreatePlayer();
+            Log("CreatePlayer");
+            timerForPlaying.Start();
+            Log("StartTimer");
         }
-        
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timerForPlaying.Stop();
+            Log("StopTimer");
+            LibPlayer.DestroyPlayer();
+            Log("DestroyPlayer");
+            LibPlayer.ReleaseGL();
+            Log("ReleaseGL");
+        }
+
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
         }
@@ -37,12 +52,15 @@ namespace CSPlayer
         private void buttonReleaseGL_Click(object sender, EventArgs e)
         {
             LibPlayer.ReleaseGL();
+            Log("ReleaseGL");
         }
 
         private void buttonCreatePlayer_Click(object sender, EventArgs e)
         {
             LibPlayer.CreatePlayer();
+            Log("CreatePlayer");
             timerForPlaying.Start();
+            Log("StartTimer");
         }
 
         private void buttonRenderOneFrame_Click(object sender, EventArgs e)
@@ -53,7 +71,9 @@ namespace CSPlayer
         private void buttonDestroyPlayer_Click(object sender, EventArgs e)
         {
             timerForPlaying.Stop();
+            Log("StopTimer");
             LibPlayer.DestroyPlayer();
+            Log("DestroyPlayer");
         }
 
         private void Timer_Render(object sender, EventArgs e)
@@ -87,11 +107,13 @@ namespace CSPlayer
         private void buttonPlay_Click(object sender, EventArgs e)
         {
             LibPlayer.Player_Play();
+            Log("Play");
         }
 
         private void buttonPause_Click(object sender, EventArgs e)
         {
             LibPlayer.Player_Pause();
+            Log("Pause");
         }
 
         //List<string> loglist = new List<string>();
@@ -110,5 +132,7 @@ namespace CSPlayer
             output.ScrollToCaret();
             output.AppendText("\n"+str);
         }
+
+       
     }
 }
