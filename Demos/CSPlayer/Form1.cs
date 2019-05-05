@@ -31,7 +31,7 @@ namespace CSPlayer
         private void buttonInitializeGL_Click(object sender, EventArgs e)
         {   
             LibPlayer.InitializeGL(Handle);
-            output.Text = "InitializeGL";
+            Log("InitializeGL");
         }
 
         private void buttonReleaseGL_Click(object sender, EventArgs e)
@@ -76,7 +76,8 @@ namespace CSPlayer
                 {
                     //Get the path of specified file
                     string filePath = openFileDialog.FileName;
-                    output.Text = filePath;
+                    Log(filePath);
+                    
 
                     LibPlayer.Player_Open(filePath);
                 }
@@ -93,9 +94,21 @@ namespace CSPlayer
             LibPlayer.Player_Pause();
         }
 
+        //List<string> loglist = new List<string>();
         private void buttonClose_Click(object sender, EventArgs e)
         {
             LibPlayer.Player_Close();
+            Log("Close");
+        }
+
+        private void Log(string str)
+        {
+            output.Focus();
+            //设置光标的位置到文本尾 
+            output.Select(output.TextLength, 0);
+            //滚动到控件光标处 
+            output.ScrollToCaret();
+            output.AppendText("\n"+str);
         }
     }
 }

@@ -36,13 +36,13 @@
             this.buttonDestroyPlayer = new System.Windows.Forms.Button();
             this.timerForPlaying = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.output = new System.Windows.Forms.Label();
             this.buttonOpen = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
             this.buttonPause = new System.Windows.Forms.Button();
             this.videopath = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.buttonClose = new System.Windows.Forms.Button();
+            this.output = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -101,18 +101,9 @@
             this.timerForPlaying.Interval = 33;
             this.timerForPlaying.Tick += new System.EventHandler(this.Timer_Render);
             // 
-            // output
-            // 
-            this.output.AutoSize = true;
-            this.output.Location = new System.Drawing.Point(12, 825);
-            this.output.Name = "output";
-            this.output.Size = new System.Drawing.Size(35, 18);
-            this.output.TabIndex = 6;
-            this.output.Text = "d\\n";
-            // 
             // buttonOpen
             // 
-            this.buttonOpen.Location = new System.Drawing.Point(36, 705);
+            this.buttonOpen.Location = new System.Drawing.Point(36, 655);
             this.buttonOpen.Name = "buttonOpen";
             this.buttonOpen.Size = new System.Drawing.Size(75, 33);
             this.buttonOpen.TabIndex = 7;
@@ -122,7 +113,7 @@
             // 
             // buttonPlay
             // 
-            this.buttonPlay.Location = new System.Drawing.Point(140, 705);
+            this.buttonPlay.Location = new System.Drawing.Point(140, 655);
             this.buttonPlay.Name = "buttonPlay";
             this.buttonPlay.Size = new System.Drawing.Size(75, 33);
             this.buttonPlay.TabIndex = 8;
@@ -132,7 +123,7 @@
             // 
             // buttonPause
             // 
-            this.buttonPause.Location = new System.Drawing.Point(246, 705);
+            this.buttonPause.Location = new System.Drawing.Point(246, 655);
             this.buttonPause.Name = "buttonPause";
             this.buttonPause.Size = new System.Drawing.Size(75, 33);
             this.buttonPause.TabIndex = 9;
@@ -151,14 +142,14 @@
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(36, 753);
+            this.trackBar1.Location = new System.Drawing.Point(36, 703);
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(1139, 69);
             this.trackBar1.TabIndex = 11;
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(353, 705);
+            this.buttonClose.Location = new System.Drawing.Point(353, 655);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 33);
             this.buttonClose.TabIndex = 12;
@@ -166,18 +157,26 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
+            // output
+            // 
+            this.output.Location = new System.Drawing.Point(36, 744);
+            this.output.Name = "output";
+            this.output.Size = new System.Drawing.Size(1139, 96);
+            this.output.TabIndex = 14;
+            this.output.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1222, 852);
+            this.Controls.Add(this.output);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.videopath);
             this.Controls.Add(this.buttonPause);
             this.Controls.Add(this.buttonPlay);
             this.Controls.Add(this.buttonOpen);
-            this.Controls.Add(this.output);
             this.Controls.Add(this.buttonDestroyPlayer);
             this.Controls.Add(this.buttonRenderOneFrame);
             this.Controls.Add(this.buttonCreatePlayer);
@@ -201,13 +200,13 @@
         private System.Windows.Forms.Button buttonDestroyPlayer;
         private System.Windows.Forms.Timer timerForPlaying;
         private System.Windows.Forms.Timer timer2;
-        private System.Windows.Forms.Label output;
         private System.Windows.Forms.Button buttonOpen;
         private System.Windows.Forms.Button buttonPlay;
         private System.Windows.Forms.Button buttonPause;
         private System.Windows.Forms.Label videopath;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.RichTextBox output;
     }
 }
 
