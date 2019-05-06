@@ -14,6 +14,7 @@ namespace CSPlayer
 {
     public partial class Form1 : Form
     {
+        IntPtr render;
         public Form1()
         {
             InitializeComponent();
@@ -21,8 +22,8 @@ namespace CSPlayer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LibPlayer.InitializeGL(Handle);
-            Log("InitializeGL");
+            render = LibPlayer.CreateRender(Handle);
+            Log("CreateRender");
             LibPlayer.CreatePlayer();
             Log("CreatePlayer");
             timerForPlaying.Start();
@@ -35,8 +36,8 @@ namespace CSPlayer
             Log("StopTimer");
             LibPlayer.DestroyPlayer();
             Log("DestroyPlayer");
-            LibPlayer.ReleaseGL();
-            Log("ReleaseGL");
+            LibPlayer.DestroyRender(render);
+            Log("DestroyRender");
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -45,14 +46,14 @@ namespace CSPlayer
 
         private void buttonInitializeGL_Click(object sender, EventArgs e)
         {   
-            LibPlayer.InitializeGL(Handle);
-            Log("InitializeGL");
+            render = LibPlayer.CreateRender(Handle);
+            Log("CreateRender");
         }
 
         private void buttonReleaseGL_Click(object sender, EventArgs e)
         {
-            LibPlayer.ReleaseGL();
-            Log("ReleaseGL");
+            LibPlayer.DestroyRender(render);
+            Log("DestroyRender");
         }
 
         private void buttonCreatePlayer_Click(object sender, EventArgs e)
@@ -65,7 +66,7 @@ namespace CSPlayer
 
         private void buttonRenderOneFrame_Click(object sender, EventArgs e)
         {
-            LibPlayer.RenderOneFrame();
+            LibPlayer.RenderOneFrame(render);
         }
 
         private void buttonDestroyPlayer_Click(object sender, EventArgs e)
@@ -78,7 +79,7 @@ namespace CSPlayer
 
         private void Timer_Render(object sender, EventArgs e)
         {
-            LibPlayer.RenderOneFrame();
+            LibPlayer.RenderOneFrame(render);
             //label1.Text = (++num).ToString();
             //Thread.Sleep(3000);
         }

@@ -15,18 +15,17 @@ namespace CSPlayer
 
 
 
+        // Render相关的接口
         [DllImport("LibPlayer")]
-        public static extern int InitializeGL(IntPtr hwnd);
+        public static extern IntPtr CreateRender(IntPtr hwnd);
 
         [DllImport("LibPlayer")]
-        public static extern int ReleaseGL();
+        public static extern int DestroyRender(IntPtr render);
 
+        // Player相关的接口
         [DllImport("LibPlayer")]
         public static extern int CreatePlayer();
-
-        [DllImport("LibPlayer")]
-        public static extern int RenderOneFrame();
-
+        
         [DllImport("LibPlayer")]
         public static extern int DestroyPlayer();
 
@@ -41,6 +40,12 @@ namespace CSPlayer
 
         [DllImport("LibPlayer")]
         public static extern int Player_Close();
+
+
+        // 其它接口
+        [DllImport("LibPlayer")]
+        public static extern int RenderOneFrame(IntPtr render);
+
 
 
     }

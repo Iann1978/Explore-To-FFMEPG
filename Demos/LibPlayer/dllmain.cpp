@@ -8,20 +8,21 @@
 #include "LibRender.h"
 
 LibPlayer *player = nullptr;
-LibRender *render = nullptr;
+//LibRender *render = nullptr;
 
 extern "C" __declspec(dllexport) int GetDllVersion()
 {
 	return 0;
 };
 
-extern "C" __declspec(dllexport) int CreateRender(HWND wnd)
+extern "C" __declspec(dllexport) LibRender *CreateRender(HWND wnd)
 {
-	render = new LibRender();
-	return render->InitializeGL(wnd);
+	LibRender *render = new LibRender();
+	render->InitializeGL(wnd);
+	return render;
 }
 
-extern "C" __declspec(dllexport) int ReleaseRender()
+extern "C" __declspec(dllexport) int DestroyRender(LibRender *render)
 {
 	if (render)
 	{
@@ -33,17 +34,17 @@ extern "C" __declspec(dllexport) int ReleaseRender()
 }
 
 
-extern "C" __declspec(dllexport) int InitializeGL(HWND wnd)
-{
-	CreateRender(wnd);
-	return 0;
-}
-
-extern "C" __declspec(dllexport) int ReleaseGL()
-{
-	ReleaseRender();
-	return 0;
-}
+//extern "C" __declspec(dllexport) int InitializeGL(HWND wnd)
+//{
+//	CreateRender(wnd);
+//	return 0;
+//}
+//
+//extern "C" __declspec(dllexport) int ReleaseGL()
+//{
+//	ReleaseRender();
+//	return 0;
+//}
 
 extern "C" __declspec(dllexport) int CreatePlayer()
 {
@@ -92,7 +93,7 @@ extern "C" __declspec(dllexport) int DestroyPlayer()
 }
 
 
-extern "C" __declspec(dllexport) int RenderOneFrame()
+extern "C" __declspec(dllexport) int RenderOneFrame(LibRender *render)
 {
 	AVFrame *frame = player->DecordeOneFrame();
 	render->RenderOneFrame(frame);
