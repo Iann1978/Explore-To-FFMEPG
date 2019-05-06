@@ -24,27 +24,27 @@ namespace CSPlayer
 
         // Player相关的接口
         [DllImport("LibPlayer")]
-        public static extern int CreatePlayer();
+        public static extern IntPtr CreatePlayer();
         
         [DllImport("LibPlayer")]
-        public static extern int DestroyPlayer();
+        public static extern int DestroyPlayer(IntPtr player);
 
         [DllImport("LibPlayer")]
-        public static extern int Player_Open(string url);
+        public static extern int Player_Open(IntPtr player, string url);
 
         [DllImport("LibPlayer")]
-        public static extern int Player_Play();
+        public static extern int Player_Play(IntPtr player);
 
         [DllImport("LibPlayer")]
-        public static extern int Player_Pause();
+        public static extern int Player_Pause(IntPtr player);
 
         [DllImport("LibPlayer")]
-        public static extern int Player_Close();
+        public static extern int Player_Close(IntPtr player);
 
 
         // 其它接口
         [DllImport("LibPlayer")]
-        public static extern int RenderOneFrame(IntPtr render);
+        public static extern int RenderOneFrame(IntPtr render, IntPtr player);
 
 
 

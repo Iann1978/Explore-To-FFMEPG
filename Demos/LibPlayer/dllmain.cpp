@@ -7,7 +7,7 @@
 #include "LibPlayer.h"
 #include "LibRender.h"
 
-LibPlayer *player = nullptr;
+//LibPlayer *player = nullptr;
 //LibRender *render = nullptr;
 
 extern "C" __declspec(dllexport) int GetDllVersion()
@@ -46,43 +46,15 @@ extern "C" __declspec(dllexport) int DestroyRender(LibRender *render)
 //	return 0;
 //}
 
-extern "C" __declspec(dllexport) int CreatePlayer()
+extern "C" __declspec(dllexport) LibPlayer *CreatePlayer()
 {
-	player = new LibPlayer();
+	LibPlayer *player = new LibPlayer();
 	player->Init();
 	//player->Open();
-	return 0;
+	return player;
 }
 
-extern "C" __declspec(dllexport) int Player_Open(const char *url)
-{
-	return player->Open(url);
-}
-
-extern "C" __declspec(dllexport) int Player_Play()
-{
-	return player->Play();
-}
-
-extern "C" __declspec(dllexport) int Player_Pause()
-{
-	if (player)
-	{
-		return player->Pause();
-	}
-	return -1;
-}
-
-extern "C" __declspec(dllexport) int Player_Close()
-{
-	if (player)
-	{
-		return player->Close();
-	}
-	return -1;
-}
-
-extern "C" __declspec(dllexport) int DestroyPlayer()
+extern "C" __declspec(dllexport) int DestroyPlayer(LibPlayer *player)
 {
 	if (player)
 	{
@@ -92,8 +64,38 @@ extern "C" __declspec(dllexport) int DestroyPlayer()
 	return 0;
 }
 
+extern "C" __declspec(dllexport) int Player_Open(LibPlayer *player, const char *url)
+{
+	return player->Open(url);
+}
 
-extern "C" __declspec(dllexport) int RenderOneFrame(LibRender *render)
+extern "C" __declspec(dllexport) int Player_Play(LibPlayer *player)
+{
+	return player->Play();
+}
+
+extern "C" __declspec(dllexport) int Player_Pause(LibPlayer *player)
+{
+	if (player)
+	{
+		return player->Pause();
+	}
+	return -1;
+}
+
+extern "C" __declspec(dllexport) int Player_Close(LibPlayer *player)
+{
+	if (player)
+	{
+		return player->Close();
+	}
+	return -1;
+}
+
+
+
+
+extern "C" __declspec(dllexport) int RenderOneFrame(LibRender *render, LibPlayer *player)
 {
 	AVFrame *frame = player->DecordeOneFrame();
 	render->RenderOneFrame(frame);

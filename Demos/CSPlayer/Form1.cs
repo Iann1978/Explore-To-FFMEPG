@@ -15,6 +15,7 @@ namespace CSPlayer
     public partial class Form1 : Form
     {
         IntPtr render;
+        IntPtr player;
         public Form1()
         {
             InitializeComponent();
@@ -24,7 +25,7 @@ namespace CSPlayer
         {
             render = LibPlayer.CreateRender(Handle);
             Log("CreateRender");
-            LibPlayer.CreatePlayer();
+            player = LibPlayer.CreatePlayer();
             Log("CreatePlayer");
             timerForPlaying.Start();
             Log("StartTimer");
@@ -34,7 +35,7 @@ namespace CSPlayer
         {
             timerForPlaying.Stop();
             Log("StopTimer");
-            LibPlayer.DestroyPlayer();
+            LibPlayer.DestroyPlayer(player);
             Log("DestroyPlayer");
             LibPlayer.DestroyRender(render);
             Log("DestroyRender");
@@ -58,7 +59,7 @@ namespace CSPlayer
 
         private void buttonCreatePlayer_Click(object sender, EventArgs e)
         {
-            LibPlayer.CreatePlayer();
+            player = LibPlayer.CreatePlayer();
             Log("CreatePlayer");
             timerForPlaying.Start();
             Log("StartTimer");
@@ -66,20 +67,20 @@ namespace CSPlayer
 
         private void buttonRenderOneFrame_Click(object sender, EventArgs e)
         {
-            LibPlayer.RenderOneFrame(render);
+            LibPlayer.RenderOneFrame(render, player);
         }
 
         private void buttonDestroyPlayer_Click(object sender, EventArgs e)
         {
             timerForPlaying.Stop();
             Log("StopTimer");
-            LibPlayer.DestroyPlayer();
+            LibPlayer.DestroyPlayer(player);
             Log("DestroyPlayer");
         }
 
         private void Timer_Render(object sender, EventArgs e)
         {
-            LibPlayer.RenderOneFrame(render);
+            LibPlayer.RenderOneFrame(render, player);
             //label1.Text = (++num).ToString();
             //Thread.Sleep(3000);
         }
@@ -100,27 +101,27 @@ namespace CSPlayer
                     Log(filePath);
                     
 
-                    LibPlayer.Player_Open(filePath);
+                    LibPlayer.Player_Open(player, filePath);
                 }
             }
         }
 
         private void buttonPlay_Click(object sender, EventArgs e)
         {
-            LibPlayer.Player_Play();
+            LibPlayer.Player_Play(player);
             Log("Play");
         }
 
         private void buttonPause_Click(object sender, EventArgs e)
         {
-            LibPlayer.Player_Pause();
+            LibPlayer.Player_Pause(player);
             Log("Pause");
         }
 
         //List<string> loglist = new List<string>();
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            LibPlayer.Player_Close();
+            LibPlayer.Player_Close(player);
             Log("Close");
         }
 
