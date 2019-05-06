@@ -10,18 +10,18 @@
 LibPlayer *player = nullptr;
 LibRender *render = nullptr;
 
-extern "C" int __declspec(dllexport)  GetDllVersion()
+extern "C" __declspec(dllexport) int GetDllVersion()
 {
 	return 0;
 };
 
-extern "C" int __declspec(dllexport) CreateRender(HWND wnd)
+extern "C" __declspec(dllexport) int CreateRender(HWND wnd)
 {
 	render = new LibRender();
 	return render->InitializeGL(wnd);
 }
 
-extern "C" int __declspec(dllexport) ReleaseRender()
+extern "C" __declspec(dllexport) int ReleaseRender()
 {
 	if (render)
 	{
@@ -33,19 +33,19 @@ extern "C" int __declspec(dllexport) ReleaseRender()
 }
 
 
-extern "C" int __declspec(dllexport) InitializeGL(HWND wnd)
+extern "C" __declspec(dllexport) int InitializeGL(HWND wnd)
 {
 	CreateRender(wnd);
 	return 0;
 }
 
-extern "C" int __declspec(dllexport) ReleaseGL()
+extern "C" __declspec(dllexport) int ReleaseGL()
 {
 	ReleaseRender();
 	return 0;
 }
 
-extern "C" int __declspec(dllexport) CreatePlayer()
+extern "C" __declspec(dllexport) int CreatePlayer()
 {
 	player = new LibPlayer();
 	player->Init();
@@ -53,17 +53,17 @@ extern "C" int __declspec(dllexport) CreatePlayer()
 	return 0;
 }
 
-extern "C" int __declspec(dllexport) Player_Open(const char *url)
+extern "C" __declspec(dllexport) int Player_Open(const char *url)
 {
 	return player->Open(url);
 }
 
-extern "C" int __declspec(dllexport) Player_Play()
+extern "C" __declspec(dllexport) int Player_Play()
 {
 	return player->Play();
 }
 
-extern "C" int __declspec(dllexport) Player_Pause()
+extern "C" __declspec(dllexport) int Player_Pause()
 {
 	if (player)
 	{
@@ -72,7 +72,7 @@ extern "C" int __declspec(dllexport) Player_Pause()
 	return -1;
 }
 
-extern "C" int __declspec(dllexport) Player_Close()
+extern "C" __declspec(dllexport) int Player_Close()
 {
 	if (player)
 	{
@@ -81,7 +81,7 @@ extern "C" int __declspec(dllexport) Player_Close()
 	return -1;
 }
 
-extern "C" int __declspec(dllexport) DestroyPlayer()
+extern "C" __declspec(dllexport) int DestroyPlayer()
 {
 	if (player)
 	{
@@ -92,7 +92,7 @@ extern "C" int __declspec(dllexport) DestroyPlayer()
 }
 
 
-extern "C" int __declspec(dllexport) RenderOneFrame()
+extern "C" __declspec(dllexport) int RenderOneFrame()
 {
 	AVFrame *frame = player->DecordeOneFrame();
 	render->RenderOneFrame(frame);
