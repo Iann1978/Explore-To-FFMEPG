@@ -44,6 +44,11 @@ namespace CSPlayer
         [DllImport("LibPlayer")]
         public static extern int Player_GetDuation(IntPtr player);
 
+        [DllImport("LibPlayer")]
+        public static extern int Player_GetCurrentPosition(IntPtr player);
+
+        
+
 
         // 其它接口
         [DllImport("LibPlayer")]

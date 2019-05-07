@@ -119,6 +119,7 @@ public:
 	int Pause();
 	AVFrame *DecordeOneFrame();
 	int GetDuation();
+	int GetCurrentPosition();
 	int GetWidth();
 	int GetHeight();
 	int Close();

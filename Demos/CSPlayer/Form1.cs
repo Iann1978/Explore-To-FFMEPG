@@ -139,8 +139,14 @@ namespace CSPlayer
         {
             int seconds = LibPlayer.Player_GetDuation(player)/1000000;
             TimeSpan ts = TimeSpan.FromSeconds(seconds);
-            duation.Text = ts.ToString(@"d\d\:h\h\:m\m\:s\s");
+            duation.Text = "duation: " + ts.ToString(@"d\d\:h\h\:m\m\:s\s");
             //duation.Text = seconds.ToString();
+        }
+
+        private void buttonGetCurpos_Click(object sender, EventArgs e)
+        {
+            int milliseconds = LibPlayer.Player_GetCurrentPosition(player);
+            curpos.Text = "curpos: " + milliseconds.ToString() + " ms";
         }
     }
 }

@@ -86,6 +86,7 @@ AVFrame* LibPlayer::Convert(AVFrame *frame)
 	int lines = sws_scale(outFrameConvert, frame->data, frame->linesize, 0, frame->height, outFrame->data, outFrame->linesize);
 	outFrame->width = frame->width;
 	outFrame->height = frame->height;
+	outFrame->pts = frame->pts;
 	return outFrame;
 
 	//return DeepCopyFrame(avframe);
@@ -172,6 +173,12 @@ int LibPlayer::GetDuation()
 {
 	return pFormatCtx->duration;
 }
+
+int LibPlayer::GetCurrentPosition()
+{
+	return pts * pFormatCtx->streams[videoindex]->r_frame_rate.den / pFormatCtx->streams[videoindex]->r_frame_rate.num;
+}
+
 int LibPlayer::GetWidth()
 {	
 	return pCodecCtx->width;

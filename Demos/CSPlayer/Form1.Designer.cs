@@ -45,6 +45,8 @@
             this.output = new System.Windows.Forms.RichTextBox();
             this.duation = new System.Windows.Forms.Label();
             this.buttonGetDuation = new System.Windows.Forms.Button();
+            this.curpos = new System.Windows.Forms.Label();
+            this.buttonGetCurpos = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -186,11 +188,32 @@
             this.buttonGetDuation.UseVisualStyleBackColor = true;
             this.buttonGetDuation.Click += new System.EventHandler(this.buttonGetDuation_Click);
             // 
+            // curpos
+            // 
+            this.curpos.AutoSize = true;
+            this.curpos.Location = new System.Drawing.Point(1045, 625);
+            this.curpos.Name = "curpos";
+            this.curpos.Size = new System.Drawing.Size(62, 18);
+            this.curpos.TabIndex = 17;
+            this.curpos.Text = "curpos";
+            // 
+            // buttonGetCurpos
+            // 
+            this.buttonGetCurpos.Location = new System.Drawing.Point(620, 655);
+            this.buttonGetCurpos.Name = "buttonGetCurpos";
+            this.buttonGetCurpos.Size = new System.Drawing.Size(131, 33);
+            this.buttonGetCurpos.TabIndex = 18;
+            this.buttonGetCurpos.Text = "GetCurpos";
+            this.buttonGetCurpos.UseVisualStyleBackColor = true;
+            this.buttonGetCurpos.Click += new System.EventHandler(this.buttonGetCurpos_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1222, 852);
+            this.Controls.Add(this.buttonGetCurpos);
+            this.Controls.Add(this.curpos);
             this.Controls.Add(this.buttonGetDuation);
             this.Controls.Add(this.duation);
             this.Controls.Add(this.output);
@@ -233,6 +256,8 @@
         private System.Windows.Forms.RichTextBox output;
         private System.Windows.Forms.Label duation;
         private System.Windows.Forms.Button buttonGetDuation;
+        private System.Windows.Forms.Label curpos;
+        private System.Windows.Forms.Button buttonGetCurpos;
     }
 }
 

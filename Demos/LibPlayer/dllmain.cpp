@@ -101,6 +101,16 @@ extern "C" __declspec(dllexport) int Player_GetDuation(LibPlayer *player)
 	return -1;
 }
 
+extern "C" __declspec(dllexport) int Player_GetCurrentPosition(LibPlayer *player)
+{
+	if (player)
+	{
+		return player->GetCurrentPosition();
+	}
+	return -1;
+}
+
+
 
 
 
