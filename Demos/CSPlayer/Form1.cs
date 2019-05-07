@@ -135,6 +135,12 @@ namespace CSPlayer
             output.AppendText("\n"+str);
         }
 
-       
+        private void buttonGetDuation_Click(object sender, EventArgs e)
+        {
+            int seconds = LibPlayer.Player_GetDuation(player)/1000000;
+            TimeSpan ts = TimeSpan.FromSeconds(seconds);
+            duation.Text = ts.ToString(@"d\d\:h\h\:m\m\:s\s");
+            //duation.Text = seconds.ToString();
+        }
     }
 }

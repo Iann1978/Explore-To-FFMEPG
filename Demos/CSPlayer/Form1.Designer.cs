@@ -43,6 +43,8 @@
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.buttonClose = new System.Windows.Forms.Button();
             this.output = new System.Windows.Forms.RichTextBox();
+            this.duation = new System.Windows.Forms.Label();
+            this.buttonGetDuation = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -165,11 +167,32 @@
             this.output.TabIndex = 14;
             this.output.Text = "";
             // 
+            // duation
+            // 
+            this.duation.AutoSize = true;
+            this.duation.Location = new System.Drawing.Point(1045, 682);
+            this.duation.Name = "duation";
+            this.duation.Size = new System.Drawing.Size(98, 18);
+            this.duation.TabIndex = 15;
+            this.duation.Text = "videopath:";
+            // 
+            // buttonGetDuation
+            // 
+            this.buttonGetDuation.Location = new System.Drawing.Point(459, 655);
+            this.buttonGetDuation.Name = "buttonGetDuation";
+            this.buttonGetDuation.Size = new System.Drawing.Size(131, 33);
+            this.buttonGetDuation.TabIndex = 16;
+            this.buttonGetDuation.Text = "GetDuation";
+            this.buttonGetDuation.UseVisualStyleBackColor = true;
+            this.buttonGetDuation.Click += new System.EventHandler(this.buttonGetDuation_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1222, 852);
+            this.Controls.Add(this.buttonGetDuation);
+            this.Controls.Add(this.duation);
             this.Controls.Add(this.output);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.trackBar1);
@@ -208,6 +231,8 @@
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.RichTextBox output;
+        private System.Windows.Forms.Label duation;
+        private System.Windows.Forms.Button buttonGetDuation;
     }
 }
 

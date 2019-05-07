@@ -92,6 +92,15 @@ extern "C" __declspec(dllexport) int Player_Close(LibPlayer *player)
 	return -1;
 }
 
+extern "C" __declspec(dllexport) int Player_GetDuation(LibPlayer *player)
+{
+	if (player)
+	{
+		return player->GetDuation();
+	}
+	return -1;
+}
+
 
 
 

@@ -147,11 +147,11 @@ int LibPlayer::Close()
 	{
 		return 1;
 	}
-	sws_freeContext(outFrameConvert);
-	av_frame_free(&outFrame);
-	av_frame_free(&pFrame);
-	avcodec_close(pCodecCtx);
-	avformat_close_input(&pFormatCtx);
+	sws_freeContext(outFrameConvert); outFrameConvert = nullptr;
+	av_frame_free(&outFrame); outFrame = nullptr;
+	av_frame_free(&pFrame); pFrame = nullptr;
+	avcodec_close(pCodecCtx); pCodecCtx = nullptr; pCodec = nullptr;
+	avformat_close_input(&pFormatCtx); pFormatCtx = nullptr;
 	status = Status_Closed;
 	return 0;
 }
@@ -166,4 +166,17 @@ int LibPlayer::Pause()
 {
 	status = Status_Paused;
 	return 0;
+}
+
+int LibPlayer::GetDuation()
+{
+	return pFormatCtx->duration;
+}
+int LibPlayer::GetWidth()
+{	
+	return pCodecCtx->width;
+}
+int LibPlayer::GetHeight()
+{
+	return pCodecCtx->height;
 }

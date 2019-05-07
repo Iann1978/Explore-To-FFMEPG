@@ -111,15 +111,6 @@ private:
 
 public:
 
-	int GetWidth()
-	{
-		return pCodecCtx->width;
-	}
-
-	int GetHeight()
-	{
-		return pCodecCtx->height;
-	}
 
 	
 	int Init();
@@ -127,6 +118,9 @@ public:
 	int Play();
 	int Pause();
 	AVFrame *DecordeOneFrame();
+	int GetDuation();
+	int GetWidth();
+	int GetHeight();
 	int Close();
 	
 
