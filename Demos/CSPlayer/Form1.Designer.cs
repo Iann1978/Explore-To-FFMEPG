@@ -151,6 +151,7 @@
             this.process.Size = new System.Drawing.Size(1139, 69);
             this.process.TabIndex = 11;
             this.process.Value = 1;
+            this.process.Scroll += new System.EventHandler(this.process_Scroll);
             // 
             // buttonClose
             // 

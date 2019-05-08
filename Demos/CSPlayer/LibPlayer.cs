@@ -39,6 +39,9 @@ namespace CSPlayer
         public static extern int Player_Pause(IntPtr player);
 
         [DllImport("LibPlayer")]
+        public static extern int Player_Seek(IntPtr player, int pos);
+
+        [DllImport("LibPlayer")]
         public static extern int Player_Close(IntPtr player);
 
         [DllImport("LibPlayer")]

@@ -154,5 +154,11 @@ namespace CSPlayer
             int seconds = LibPlayer.Player_GetCurrentPosition(player);
             curpos.Text = "curpos: " + seconds.ToString() + " s";
         }
+
+        private void process_Scroll(object sender, EventArgs e)
+        {
+            Log("process:" + process.Value.ToString());
+            LibPlayer.Player_Seek(player, process.Value);
+        }
     }
 }

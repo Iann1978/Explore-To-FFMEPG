@@ -168,12 +168,18 @@ int LibPlayer::Pause()
 	status = Status_Paused;
 	return 0;
 }
+int LibPlayer::Seek(int pos)
+{
+	int64_t dstpts = (int64_t)pos * pFormatCtx->streams[videoindex]->time_base.den / pFormatCtx->streams[videoindex]->time_base.num;
+	av_seek_frame(pFormatCtx, videoindex, dstpts, 0);
+	return 0;
+}
 
 int LibPlayer::GetDuation()
 {
 	if (pFormatCtx)
-	{
-		return pFormatCtx->duration / 1000000;
+	{	
+		return pFormatCtx->duration / AV_TIME_BASE;
 	}
 	return 1;
 }
@@ -181,8 +187,8 @@ int LibPlayer::GetDuation()
 int LibPlayer::GetCurrentPosition()
 {
 	if (pFormatCtx)
-	{
-		return (pts * pFormatCtx->streams[videoindex]->r_frame_rate.den / pFormatCtx->streams[videoindex]->r_frame_rate.num)/1000;
+	{	
+		return (pts * pFormatCtx->streams[videoindex]->time_base.num / pFormatCtx->streams[videoindex]->time_base.den);
 	}
 	return 0;
 }

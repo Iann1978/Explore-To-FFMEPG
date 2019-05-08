@@ -117,6 +117,7 @@ public:
 	int Open(const char *url);
 	int Play();
 	int Pause();
+	int Seek(int pos);
 	AVFrame *DecordeOneFrame();
 	int GetDuation();
 	int GetCurrentPosition();

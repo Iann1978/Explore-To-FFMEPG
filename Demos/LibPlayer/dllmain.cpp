@@ -83,6 +83,16 @@ extern "C" __declspec(dllexport) int Player_Pause(LibPlayer *player)
 	return -1;
 }
 
+extern "C" __declspec(dllexport) int Player_Seek(LibPlayer *player, int pos)
+{
+	if (player)
+	{
+		return player->Seek(pos);
+	}
+	return -1;
+}
+
+
 extern "C" __declspec(dllexport) int Player_Close(LibPlayer *player)
 {
 	if (player)
