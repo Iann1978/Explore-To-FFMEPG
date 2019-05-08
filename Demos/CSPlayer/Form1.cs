@@ -81,6 +81,12 @@ namespace CSPlayer
         private void Timer_Render(object sender, EventArgs e)
         {
             LibPlayer.RenderOneFrame(render, player);
+            int duation = LibPlayer.Player_GetDuation(player);
+            int curpos = LibPlayer.Player_GetCurrentPosition(player);
+            process.Minimum = 0;
+            process.Maximum = duation;
+            process.Value = curpos;
+            process.Update();
             //label1.Text = (++num).ToString();
             //Thread.Sleep(3000);
         }
@@ -137,7 +143,7 @@ namespace CSPlayer
 
         private void buttonGetDuation_Click(object sender, EventArgs e)
         {
-            int seconds = LibPlayer.Player_GetDuation(player)/1000000;
+            int seconds = LibPlayer.Player_GetDuation(player);
             TimeSpan ts = TimeSpan.FromSeconds(seconds);
             duation.Text = "duation: " + ts.ToString(@"d\d\:h\h\:m\m\:s\s");
             //duation.Text = seconds.ToString();
@@ -145,8 +151,8 @@ namespace CSPlayer
 
         private void buttonGetCurpos_Click(object sender, EventArgs e)
         {
-            int milliseconds = LibPlayer.Player_GetCurrentPosition(player);
-            curpos.Text = "curpos: " + milliseconds.ToString() + " ms";
+            int seconds = LibPlayer.Player_GetCurrentPosition(player);
+            curpos.Text = "curpos: " + seconds.ToString() + " s";
         }
     }
 }

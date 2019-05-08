@@ -171,12 +171,20 @@ int LibPlayer::Pause()
 
 int LibPlayer::GetDuation()
 {
-	return pFormatCtx->duration;
+	if (pFormatCtx)
+	{
+		return pFormatCtx->duration / 1000000;
+	}
+	return 1;
 }
 
 int LibPlayer::GetCurrentPosition()
 {
-	return pts * pFormatCtx->streams[videoindex]->r_frame_rate.den / pFormatCtx->streams[videoindex]->r_frame_rate.num;
+	if (pFormatCtx)
+	{
+		return (pts * pFormatCtx->streams[videoindex]->r_frame_rate.den / pFormatCtx->streams[videoindex]->r_frame_rate.num)/1000;
+	}
+	return 0;
 }
 
 int LibPlayer::GetWidth()

@@ -40,14 +40,14 @@
             this.buttonPlay = new System.Windows.Forms.Button();
             this.buttonPause = new System.Windows.Forms.Button();
             this.videopath = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.process = new System.Windows.Forms.TrackBar();
             this.buttonClose = new System.Windows.Forms.Button();
             this.output = new System.Windows.Forms.RichTextBox();
             this.duation = new System.Windows.Forms.Label();
             this.buttonGetDuation = new System.Windows.Forms.Button();
             this.curpos = new System.Windows.Forms.Label();
             this.buttonGetCurpos = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.process)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonInitializeGL
@@ -144,12 +144,13 @@
             this.videopath.TabIndex = 10;
             this.videopath.Text = "videopath:";
             // 
-            // trackBar1
+            // process
             // 
-            this.trackBar1.Location = new System.Drawing.Point(36, 703);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(1139, 69);
-            this.trackBar1.TabIndex = 11;
+            this.process.Location = new System.Drawing.Point(36, 703);
+            this.process.Name = "process";
+            this.process.Size = new System.Drawing.Size(1139, 69);
+            this.process.TabIndex = 11;
+            this.process.Value = 1;
             // 
             // buttonClose
             // 
@@ -218,7 +219,7 @@
             this.Controls.Add(this.duation);
             this.Controls.Add(this.output);
             this.Controls.Add(this.buttonClose);
-            this.Controls.Add(this.trackBar1);
+            this.Controls.Add(this.process);
             this.Controls.Add(this.videopath);
             this.Controls.Add(this.buttonPause);
             this.Controls.Add(this.buttonPlay);
@@ -233,7 +234,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.process)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -251,7 +252,7 @@
         private System.Windows.Forms.Button buttonPlay;
         private System.Windows.Forms.Button buttonPause;
         private System.Windows.Forms.Label videopath;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.TrackBar process;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.RichTextBox output;
         private System.Windows.Forms.Label duation;
