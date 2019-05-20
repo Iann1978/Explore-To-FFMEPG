@@ -149,6 +149,7 @@ int LibPlayer::Close()
 		return 1;
 	}
 	sws_freeContext(outFrameConvert); outFrameConvert = nullptr;
+	av_free(outFrameBuffer); outFrameBuffer = nullptr;
 	av_frame_free(&outFrame); outFrame = nullptr;
 	av_frame_free(&pFrame); pFrame = nullptr;
 	avcodec_close(pCodecCtx); pCodecCtx = nullptr; pCodec = nullptr;
