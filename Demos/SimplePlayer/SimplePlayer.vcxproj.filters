@@ -3,6 +3,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SimplePlayer.cpp" />
+    <ClCompile Include="memleaktest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SimplePlayer.h" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FirstSDL-2.0", "FirstSDL-2.0\FirstSDL-2.0.vcxproj", "{BA16EF3A-0180-4DA9-9BDE-35093B5D104D}"
 EndProject
@@ -16,7 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSPlayer", "CSPlayer\CSPlayer.csproj", "{B83F544B-8F46-4087-A164-0818D184D965}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B4D51705-806E-439A-B3FF-BD058085A17A} = {B4D51705-806E-439A-B3FF-BD058085A17A}
-		{C8F74FE8-2F33-4167-B7E1-0DEE45A6BB5E} = {C8F74FE8-2F33-4167-B7E1-0DEE45A6BB5E}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLDll", "OpenGLDll\OpenGLDll.vcxproj", "{C8F74FE8-2F33-4167-B7E1-0DEE45A6BB5E}"
